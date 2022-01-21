@@ -1,0 +1,17 @@
+<title>{{ recipe_name }}</title>
+<h3>{{ recipe_name }}</h3>
+<h4>Raaka-aineet</h4>
+{{ ingredient_name }} {{amount}}g
+<hr>
+<h5>{{ total }}</h5>
+<hr>
+<h4>Comments:</h4>
+{% for comment in comments %}
+{{ comment.content }}<br>
+{% endfor %}
+
+<form action="/{{ recipe_name }}" method="post">
+    Comment: <br>
+    <input type="text" name="comment">
+    <input type="submit" value="Add comment">
+</form>

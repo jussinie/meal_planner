@@ -1,6 +1,6 @@
 Meal Planner -sovellus
 
-Tässä sovelluksessa käyttäjät voivat luoda itselleen päivittäisen ruokalistan, jonka avulla seurata kalorien ja makroravinteiden saantiaan. Käyttäjä voi luoda reseptejä, jotka ovat näkyvissä muille käyttäjille. Reseptejä on mahdollista arvioida. 
+Tässä sovelluksessa käyttäjät voivat luoda itselleen päivittäisen ruokalistan, jonka avulla seurata kalorien ja makroravinteiden saantiaan. Käyttäjä voi luoda reseptejä, jotka ovat näkyvissä muille käyttäjille. Muut käyttäjät voivat arvioida reseptejä ja lisätä niitä myös omalle ruokalistalleen.  
 
 Sovelluksen ominaisuuksia:
 

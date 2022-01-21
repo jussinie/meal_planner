@@ -1,0 +1,8 @@
+<title>Recipes</title>
+Recipes saved: {{ count }}
+<hr>
+{% for recipe in recipes %}
+<a href="{{ recipe.name }}">{{ recipe.name }}</a> 
+<hr>
+{% endfor %}
+<a href="/add_recipe">Siirry lisäämään uusi</a>

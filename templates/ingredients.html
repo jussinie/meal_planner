@@ -1,0 +1,26 @@
+<title>Ingredients</title>
+Ingredients saved: {{ count }}
+<hr>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Calories</th>
+        <th>Carbs</th>
+        <th>Protein</th>
+        <th>Fat</th>
+        <th>Salt</th>
+    </tr>
+    {% for ingredient in ingredients %}
+    <tr>
+        <td>{{ ingredient.name}}</td>
+        <td>{{ingredient.kcal}}</td>
+        <td>{{ingredient.carbs}}</td>
+        <td>{{ingredient.protein}}</td>
+        <td>{{ingredient.fat}}</td>
+        <td>{{ingredient.salt}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/add_ingredient">Siirry lisäämään uusi</a>
+<a href="/">Etusivulle</a>
