@@ -3,3 +3,11 @@ test
 <a href="/recipes">recipes</a>
 <a href="/ingredients">ingredients</a>
 <a href="/users">users</a>
+
+<br>
+<br>
+
+<p>Freshly added recipes:</p> 
+{% for recipe in recipes %}
+<a href="{{ recipe.name }}">{{ recipe.name }}</a> <br>
+{% endfor %}

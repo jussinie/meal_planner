@@ -13,5 +13,11 @@
 <form action="/{{ recipe_name }}" method="post">
     Comment: <br>
     <input type="text" name="comment">
-    <input type="submit" value="Add comment">
+    <input type="submit" value="Add comment" name="submit_comment">
 </form>
+
+<form action="/{{ recipe_name }}" method="post">
+    <input type="submit" value="Add to planner" name="add_recipe_to_plan">
+</form>
+
+<a href="/recipes">Back to recipes</a>
