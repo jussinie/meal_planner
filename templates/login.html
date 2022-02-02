@@ -1,3 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Log in to the app{% endblock %}
+{% block content %}
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+<hr>
+{% else %}
 <form action="/send_login" method="post">
     Username:
     <input type="text" name="username">
@@ -5,5 +13,6 @@
     <input type="password" name="password">
     <input type="submit" value="Login">
 </form>
-
+{% endif %}
+{% endblock %}
 

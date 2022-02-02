@@ -1,5 +1,6 @@
+from sqlalchemy import null
 from app import app
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, session, url_for
 from user import User
 from recipe import Recipe
 from ingredient import Ingredient
@@ -10,6 +11,7 @@ from db import db
 def index():
     result = db.session.execute("SELECT name FROM recipes LIMIT 2")
     recipes = result.fetchall()
+    #print("session token", session["username"])
     #return f'heippa {user.name}, your BMR is {calculate_bmr(user.weight, user.height, user.age, True)}'
     return render_template("index.html", recipes=recipes)
 
@@ -61,6 +63,7 @@ def login():
 def send_login():
     username = request.form["username"]
     password = request.form["password"]
+    #session["username"] = username
     sql = "SELECT id, password FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
@@ -70,9 +73,11 @@ def send_login():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             print("valid password!")
+            session["username"] = username
+            return redirect(url_for('user', username=username))
         else:
             print("invalid password!")
-    return redirect("/users")
+            return redirect("/login")
 
 @app.route("/ingredients")
 def ingredients():
@@ -215,3 +220,8 @@ def send_comment():
     #db.session.execute(sql_recipe_ingredients, {"amount1":amount1, "recipe_id":recipe_id, "ingredient_id":ingredient_result})
     #db.session.commit()
     return redirect("/recipes")
+
+@app.route("/logout")
+def logout():
+    del session["username"]
+    return redirect("/")

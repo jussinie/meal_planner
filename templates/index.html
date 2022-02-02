@@ -1,5 +1,13 @@
+{% extends "layout.html" %}
 <title>Etusivu</title>
-test
+
+{% block content %}
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+
+<hr>
+
 <a href="/recipes">recipes</a>
 <a href="/ingredients">ingredients</a>
 <a href="/users">users</a>
@@ -11,3 +19,9 @@ test
 {% for recipe in recipes %}
 <a href="{{ recipe.name }}">{{ recipe.name }}</a> <br>
 {% endfor %}
+
+{% else %}
+<p>Please login <a href="/login">here</a> first</p>
+{% endif %}
+
+{% endblock %}
