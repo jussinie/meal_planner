@@ -1,3 +1,7 @@
+{% extends "layout.html" %}
+{% block title %} {{ recipe_name }} {% endblock %}
+{% block content %}
+{% if session.username %}
 <title>Add recipe</title>
 <h3>Add new recipe!</h3>
 <form action="/send_recipe" method="post">
@@ -21,3 +25,5 @@
 
 </form>
 <a href="/">Siirry etusivulle</a>
+{% endif %}
+{% endblock %}

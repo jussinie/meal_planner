@@ -1,0 +1,35 @@
+#comment_card {
+    margin: 10px;
+    padding: 5px;
+    border-style: solid;
+    border-width: 1px;
+    width: 30%;
+}
+
+#user_card {
+    background-color: cornflowerblue;
+    width: 50%;
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
+
+.user_tables {
+    margin: auto;
+}
+
+.front_page_cards {
+    background-color: crimson;
+    margin: auto;
+    width: 75%;
+    align-content: center;
+}
+
+#recipes_card, #ingredients_card, #users_card {
+    margin:auto;
+    width: 25%;
+    height: 250px;
+    margin: 10px;
+    background-color: coral;
+    color:blueviolet;
+}

@@ -35,7 +35,7 @@ def send():
     sql = "INSERT INTO users (first_name, last_name, username, password, height, weight, age, gender) VALUES (:first_name, :last_name, :username, :password, :height, :weight, :age, :gender)"
     db.session.execute(sql, {"first_name":first_name, "last_name":last_name, "username":username, "password":hash_value, "height":height, "weight":weight, "age":age, "gender":gender })
     db.session.commit()
-    return redirect("users")
+    return redirect("login")
 
 @app.route("/users")
 def users():
@@ -69,6 +69,8 @@ def send_login():
     user = result.fetchone()
     if not user:
         print("invalid username!")
+        error_message = "Username doesn't exist! Please try again."
+        return render_template("login.html", error_message=error_message)
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
@@ -144,16 +146,23 @@ def send_recipe():
 @app.route("/<name>", methods=['GET', 'POST'])
 def recipe(name):
     if request.method == 'POST':
-        if name in request.form:
+        if "submit_comment" in request.form:
             comment = request.form["comment"]
             print("uusi comment!")
             print(comment)
+            #Fetch recipe id
             sql_recipe_id = "SELECT id FROM recipes WHERE name=:name"
             recipe_id_result = db.session.execute(sql_recipe_id, {"name":name})
             recipe_id = recipe_id_result.fetchone()[0]
             print(recipe_id)
-            sql_comment = "INSERT INTO comments (user_id, recipe_id, content, sent_at) VALUES (1, :recipe_id, :comment, NOW())"
-            db.session.execute(sql_comment, {"recipe_id":recipe_id, "comment":comment})
+            #Fetch user id
+            username=session["username"]
+            sql_user_id = "SELECT id FROM users WHERE username=:username"
+            user_id_result = db.session.execute(sql_user_id, {"username":username})
+            user_id = user_id_result.fetchone()[0]
+            #Fetch all comments
+            sql_comment = "INSERT INTO comments (user_id, recipe_id, content, sent_at) VALUES (:user_id, :recipe_id, :comment, NOW())"
+            db.session.execute(sql_comment, {"user_id":user_id, "recipe_id":recipe_id, "comment":comment})
             db.session.commit()
             #sql_ingredient_id_result = db.session.execute(sql_ingredient_id, {"ingredient1":ingredient1})
             #ingredient_result = sql_ingredient_id_result.fetchone()[0]
@@ -173,10 +182,18 @@ def recipe(name):
             recipe_id = recipe_id_result.fetchone()[0]
             print(recipe_id)
             print("Meal added!")
-            sql_add_to_plan = "INSERT INTO users_recipes (user_id, recipe_id) VALUES (1, :recipe_id)"
-            db.session.execute(sql_add_to_plan, {"recipe_id":recipe_id})
+            #Fetch user id
+            username=session["username"]
+            sql_user_id = "SELECT id FROM users WHERE username=:username"
+            user_id_result = db.session.execute(sql_user_id, {"username":username})
+            user_id = user_id_result.fetchone()[0]
+            #Add to recipes
+            sql_add_to_plan = "INSERT INTO users_recipes (user_id, recipe_id) VALUES (:user_id, :recipe_id)"
+            db.session.execute(sql_add_to_plan, {"user_id":user_id, "recipe_id":recipe_id})
             db.session.commit()
             return redirect("/recipes")
+        else:
+            print("pieleen menee")
 
     else: 
         sql = "SELECT r.name as recipe_name, i.name as ingredient_name, i.kcal, i.carbs, i.protein, i.fat, i.salt, ri.amount, r.id, r.total_kcal FROM recipes r, ingredients i, recipes_ingredients ri WHERE r.name=:name AND r.id = ri.recipe_id AND i.id = ri.ingredient_id"
@@ -196,9 +213,10 @@ def recipe(name):
         total = f'Total calories {total_kcal}, carbohydrates {carbs/100*amount}, protein {protein/100*amount}, fat {fat/100*amount}.'
         print(ingredient_name)
         #comments
-        sql_comments = "SELECT * FROM comments WHERE recipe_id=:recipe_id"
+        #sql_comments = "SELECT * FROM comments WHERE recipe_id=:recipe_id"
+        sql_comments = "SELECT c.content, c.sent_at, u.first_name, u.last_name FROM comments c LEFT JOIN users u ON u.id=user_id WHERE recipe_id=:recipe_id ORDER BY c.sent_at"
         result_comments = db.session.execute(sql_comments, {"recipe_id":recipe_id})
-        print(result_comments)
+        print("kommentointia", result_comments)
         return render_template("recipe.html", recipe_name=recipe_name, ingredient_name=ingredient_name, amount=amount, total=total, comments=result_comments)    
 
 @app.route("/send_comment", methods=["POST"])

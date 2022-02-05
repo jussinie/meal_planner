@@ -1,3 +1,7 @@
+{% extends "layout.html" %}
+{% block title %} {{ recipe_name }} {% endblock %}
+{% block content %}
+{% if session.username %}
 <title>Ingredients</title>
 Ingredients saved: {{ count }}
 <hr>
@@ -24,3 +28,5 @@ Ingredients saved: {{ count }}
 
 <a href="/add_ingredient">Siirry lisäämään uusi</a>
 <a href="/">Etusivulle</a>
+{% endif %}
+{% endblock %}

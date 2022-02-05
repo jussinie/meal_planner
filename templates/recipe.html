@@ -1,4 +1,7 @@
-<title>{{ recipe_name }}</title>
+{% extends "layout.html" %}
+{% block title %} {{ recipe_name }} {% endblock %}
+{% block content %}
+{% if session.username %}
 <h3>{{ recipe_name }}</h3>
 <h4>Raaka-aineet</h4>
 {{ ingredient_name }} {{amount}}g
@@ -7,7 +10,14 @@
 <hr>
 <h4>Comments:</h4>
 {% for comment in comments %}
-{{ comment.content }}<br>
+<div id="comment_card">
+    <div>
+        {{ comment.first_name}} {{ comment.last_name}} {{ comment.sent_at.strftime("%Y-%m-%d %H:%M") }} <br>
+    </div>
+    <div>
+        <p>{{ comment.content }}</p>
+    </div>
+</div>
 {% endfor %}
 
 <form action="/{{ recipe_name }}" method="post">
@@ -21,3 +31,5 @@
 </form>
 
 <a href="/recipes">Back to recipes</a>
+{% endif %}
+{% endblock %}

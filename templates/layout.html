@@ -4,13 +4,27 @@
     {% block head %}
     <title>{% block title %}{% endblock %} - Meal Planner</title>
     {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='meal_planner_styles.css') }}">
   </head>
+  
   <body>
+    <div id="header">
+        <p>This is header</p>
+        <hr>
+      </div>
     <div id="content">{% block content %}{% endblock %}</div>
+    {% if session.username %}
     <div id="footer">
       {% block footer %}
+      <hr>
+      This is footer. <br>
       &copy; Copyright jussinie 
       {% endblock %}
     </div>
+    {% else %}
+    {% block login%}
+    <p>Please login <a href="/login">here</a> first</p>
+    {% endblock %}
+    {% endif %}
   </body>
 </html>

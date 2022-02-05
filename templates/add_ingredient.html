@@ -1,3 +1,7 @@
+{% extends "layout.html" %}
+{% block title %} {{ recipe_name }} {% endblock %}
+{% block content %}
+{% if session.username %}
 <title>Add ingredient</title>
 <h3>Add new ingredient!</h3>
 <form action="/send_ingredient" method="post">
@@ -9,3 +13,7 @@
     Salt: <input type="text" name="salt">
     <input type="submit" value="Add ingredient">
 </form>
+
+<a href="/ingredients">Go back</a>
+{% endif %}
+{% endblock %}

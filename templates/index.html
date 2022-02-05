@@ -8,20 +8,24 @@
 
 <hr>
 
-<a href="/recipes">recipes</a>
-<a href="/ingredients">ingredients</a>
-<a href="/users">users</a>
+<div class="front_page_cards">
+    <div id="recipes_card">
+        <a href="/recipes">recipes</a>
+    </div>
+    <div id="ingredients_card">
+        <a href="/ingredients">ingredients</a>
+    </div>
+    <div id="users_card">
+        <a href="/users">users</a>
+    </div>
+</div>
 
-<br>
-<br>
-
-<p>Freshly added recipes:</p> 
+<div>
+    <p>Freshly added recipes:</p> 
 {% for recipe in recipes %}
 <a href="{{ recipe.name }}">{{ recipe.name }}</a> <br>
 {% endfor %}
-
-{% else %}
-<p>Please login <a href="/login">here</a> first</p>
 {% endif %}
 
 {% endblock %}
+</div>
