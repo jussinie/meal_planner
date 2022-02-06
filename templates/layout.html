@@ -10,6 +10,10 @@
   <body>
     <div id="header">
         <p>This is header</p>
+        {% if session.username %}
+        <p>You are logged in as {{ session.username }}</p>
+        <a href="/logout">Kirjaudu ulos</a>
+        {% endif %}
         <hr>
       </div>
     <div id="content">{% block content %}{% endblock %}</div>

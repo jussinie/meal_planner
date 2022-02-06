@@ -26,6 +26,12 @@ Ingredients saved: {{ count }}
     {% endfor %}
 </table>
 
+{% if user.admin %}
+<p>ADMIN</p>
+{% else %}
+<p>EI ADMIN</p>
+{% endif %}
+
 <a href="/add_ingredient">Siirry lisäämään uusi</a>
 <a href="/">Etusivulle</a>
 {% endif %}

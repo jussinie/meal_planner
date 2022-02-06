@@ -25,17 +25,31 @@ def send():
     last_name = request.form["last_name"]
     username = request.form["username"]
     password = request.form["password"]
-    height = request.form["height"]
-    weight = request.form["weight"]
-    age = request.form["age"]
+    height = int(request.form["height"])
+    weight = float(request.form["weight"])
+    age = int(request.form["age"])
     gender = request.form["gender"]
+
+    def calculate_bmr(weight: float, height: int, age: int, gender: str):
+        if gender == "Male" or gender == "male":
+            bmr = 10.0 * weight + 6.25 * height - 5 * age + 5
+            return bmr
+        else:
+            bmr = 10.0 * weight + 6.25 * height - 5 * age - 161
+            return bmr
+
+    bmr = calculate_bmr(weight, height, age, gender)
 
     hash_value = generate_password_hash(password)
 
-    sql = "INSERT INTO users (first_name, last_name, username, password, height, weight, age, gender) VALUES (:first_name, :last_name, :username, :password, :height, :weight, :age, :gender)"
-    db.session.execute(sql, {"first_name":first_name, "last_name":last_name, "username":username, "password":hash_value, "height":height, "weight":weight, "age":age, "gender":gender })
-    db.session.commit()
-    return redirect("login")
+    try:
+        sql = "INSERT INTO users (first_name, last_name, username, password, height, weight, age, gender, bmr) VALUES (:first_name, :last_name, :username, :password, :height, :weight, :age, :gender, :bmr)"
+        db.session.execute(sql, {"first_name":first_name, "last_name":last_name, "username":username, "password":hash_value, "height":height, "weight":weight, "age":age, "gender":gender, "bmr":bmr })
+        db.session.commit()
+        return redirect("login")
+    except:
+        error_message="Username exists already. Please try again with another username."
+        return render_template("new_user", error_message=error_message)
 
 @app.route("/users")
 def users():
@@ -83,9 +97,15 @@ def send_login():
 
 @app.route("/ingredients")
 def ingredients():
+    # Fetch user
+    username=session["username"]
+    sql_user = "SELECT * FROM users WHERE username=:username"
+    user_result = db.session.execute(sql_user, {"username":username})
+    user = user_result.fetchone()[0]
+
     result = db.session.execute("SELECT name, kcal, carbs, protein, fat, salt FROM ingredients")
     ingredients = result.fetchall()
-    return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients)
+    return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients, user=sql_user)
 
 @app.route("/add_ingredient")
 def add_ingredient():
