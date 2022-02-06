@@ -4,6 +4,8 @@ Tässä sovelluksessa käyttäjät voivat luoda itselleen päivittäisen ruokali
 
 ## Sovelluksen ominaisuuksia:
 
+Sovellus toimii osoitteessa https://secret-journey-84354.herokuapp.com/
+
  - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
    - Käyttäjänimen (username) on oltava uniikki. Muuten tunnuksen luominen ei onnistu. Kentissä ei ole vielä tarkistuksia, vaan pituuden ja iän on oltava integer-muotoista, painon float-muotoista ja sukupuolen tekstimuotoista dataa. Kaikki muut ovat tekstikenttiä. 
  - Käyttäjä voi lisätä itselleen pituuden ja painon sekä aktiivisuustason, jolloin sovellus laskee hänelle painoindeksin sekä päivittäisen kaloritarpeen. 
