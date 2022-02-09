@@ -95,17 +95,48 @@ def send_login():
             print("invalid password!")
             return redirect("/login")
 
-@app.route("/ingredients")
+@app.route("/ingredients", methods=['GET', 'POST'])
 def ingredients():
-    # Fetch user
-    username=session["username"]
-    sql_user = "SELECT * FROM users WHERE username=:username"
-    user_result = db.session.execute(sql_user, {"username":username})
-    user = user_result.fetchone()[0]
+    if request.method == 'POST':
+        # Fetch ingredient id from the form
+        if (request.form.get('ingredient_approved')):
+            id = int(request.form.get('ingredient_approved'))
+            # Update approval status in db
+            sql_approve_ingredient = "UPDATE ingredients SET approved=true WHERE id=:id"
+            db.session.execute(sql_approve_ingredient, {"id":id})
+            db.session.commit()
+            return redirect("/ingredients")
+        elif (request.form.get('ingredient_removed')):
+            
+            id = int(request.form.get('ingredient_removed'))
+            print(id, 'removed')
+            # Update approval status in db
+            #sql_approve_ingredient = "UPDATE ingredients SET approved=true WHERE id=:id"
+            #db.session.execute(sql_approve_ingredient, {"id":id})
+            #db.session.commit()
+            return redirect("/ingredients")
 
-    result = db.session.execute("SELECT name, kcal, carbs, protein, fat, salt FROM ingredients")
-    ingredients = result.fetchall()
-    return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients, user=sql_user)
+    elif request.method == 'GET':
+        # Fetch user
+        username=session["username"]
+        sql_user = "SELECT * FROM users WHERE username=:username"
+        user_result = db.session.execute(sql_user, {"username":username})
+        user = user_result.fetchone()
+
+        # Fetch approved ingredients
+        result = db.session.execute("SELECT name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=true")
+        ingredients = result.fetchall()
+
+        # Fetch non_approved ingredients
+        result_not_approved = db.session.execute("SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false")
+        ingredients_not_approved = result_not_approved.fetchall()
+
+        print(user)
+        return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients, ingredients_not_approved=ingredients_not_approved, user=user)
+
+    else:
+        print("mentiin elseen")
+        return redirect("/ingredients")
 
 @app.route("/add_ingredient")
 def add_ingredient():
@@ -119,7 +150,7 @@ def send_ingredient():
     protein = request.form["protein"]
     fat = request.form["fat"]
     salt = request.form["salt"]
-    sql = "INSERT INTO ingredients (name, kcal, carbs, protein, fat, salt) VALUES (:name, :kcal, :carbs, :protein, :fat, :salt)"
+    sql = "INSERT INTO ingredients (name, kcal, carbs, protein, fat, salt, approved) VALUES (:name, :kcal, :carbs, :protein, :fat, :salt, false)"
     db.session.execute(sql, {"name":name, "kcal":kcal, "carbs":carbs, "protein":protein, "fat":fat, "salt":salt})
     db.session.commit()
     return redirect("/recipes")

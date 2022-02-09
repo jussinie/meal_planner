@@ -182,7 +182,9 @@ CREATE TABLE public.users (
     height integer,
     weight double precision,
     age integer,
-    gender text
+    gender text,
+    admin boolean,
+    bmr double precision
 );
 
 
@@ -317,6 +319,14 @@ ALTER TABLE ONLY public.recipes_ingredients
 
 ALTER TABLE ONLY public.recipes
     ADD CONSTRAINT recipes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users unique_username; Type: CONSTRAINT; Schema: public; Owner: niemijus
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
 
 
 --
