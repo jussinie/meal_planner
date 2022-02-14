@@ -19,7 +19,7 @@ def index():
 def new():
     return render_template("new_user.html")
 
-@app.route("/send", methods=["POST"])
+@app.route("/send_new_user", methods=["POST"])
 def send():
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
@@ -49,7 +49,7 @@ def send():
         return redirect("login")
     except:
         error_message="Username exists already. Please try again with another username."
-        return render_template("new_user", error_message=error_message)
+        return render_template("new_user.html", error_message=error_message)
 
 @app.route("/users")
 def users():
