@@ -1,11 +1,9 @@
 from sqlalchemy import null
 from app import app
 from flask import redirect, render_template, request, session, url_for
-from user import User
-from recipe import Recipe
-from ingredient import Ingredient
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
+import ingredient_funcs
 
 @app.route("/")
 def index():
@@ -99,30 +97,22 @@ def send_login():
 def ingredients():
     if request.method == 'POST':
         # Fetch ingredient id from the form
-        if (request.form.get('ingredient_approved')):
+        if request.form.get('ingredient_approved'):
             id = int(request.form.get('ingredient_approved'))
             # Update approval status in db
-            sql_approve_ingredient = "UPDATE ingredients SET approved=true WHERE id=:id"
-            db.session.execute(sql_approve_ingredient, {"id":id})
-            db.session.commit()
-            return redirect("/ingredients")
-        elif (request.form.get('ingredient_removed')):
-            
-            id = int(request.form.get('ingredient_removed'))
-            print(id, 'removed')
-            sql_cancel_adding_ingredient = "DELETE FROM ingredients WHERE id=:id"
-            db.session.execute(sql_cancel_adding_ingredient, {"id":id})
-            db.session.commit()
+            ingredient_funcs.set_ingredient_as_approved(id)
             return redirect("/ingredients")
 
-        elif (request.form.get('ingredient_canceled')):
-            
+        elif request.form.get('ingredient_removed'):            
+            id = int(request.form.get('ingredient_removed'))
+            ingredient_funcs.remove_ingredient(id)
+            return redirect("/ingredients")
+
+        elif request.form.get('ingredient_canceled'):
             id = int(request.form.get('ingredient_canceled'))
             print(id, 'canceled')
             # Delete row from table, i.e. cancel adding ingredient
-            sql_cancel_adding_ingredient = "DELETE FROM ingredients WHERE id=:id"
-            db.session.execute(sql_cancel_adding_ingredient, {"id":id})
-            db.session.commit()
+            ingredient_funcs.cancel_approval(id)
             return redirect("/ingredients")
 
     elif request.method == 'GET':
@@ -160,9 +150,7 @@ def add_ingredient():
 @app.route("/send_ingredient", methods=["POST"])
 def send_ingredient():
     username=session["username"]
-    sql_user = "SELECT * FROM users WHERE username=:username"
-    user_result = db.session.execute(sql_user, {"username":username})
-    user_id = user_result.fetchone()[0]
+    user_id = ingredient_funcs.get_user(username)
 
     name = request.form["name"]
     kcal = request.form["kcal"]
@@ -170,9 +158,8 @@ def send_ingredient():
     protein = request.form["protein"]
     fat = request.form["fat"]
     salt = request.form["salt"]
-    sql = "INSERT INTO ingredients (name, kcal, carbs, protein, fat, salt, approved, added_by_user_id) VALUES (:name, :kcal, :carbs, :protein, :fat, :salt, false, :user_id)"
-    db.session.execute(sql, {"name":name, "kcal":kcal, "carbs":carbs, "protein":protein, "fat":fat, "salt":salt, "user_id":user_id})
-    db.session.commit()
+
+    ingredient_funcs.add_ingredient(name, kcal, carbs, protein, fat, salt, user_id)
     return redirect("/recipes")
 
 @app.route("/recipes")
