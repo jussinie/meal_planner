@@ -68,7 +68,9 @@ CREATE TABLE public.ingredients (
     carbs double precision,
     protein double precision,
     fat double precision,
-    salt double precision
+    salt double precision,
+    approved boolean,
+    added_by_user_id integer
 );
 
 

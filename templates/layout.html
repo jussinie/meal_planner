@@ -10,10 +10,26 @@
   
   <body>
     <div id="header">
-        <p>This is header</p>
         {% if session.username %}
-        <p>You are logged in as {{ session.username }}</p>
+        <nav class="navbar">
+          <a class="brand" href="#">RS</a>
+          <ul>
+            <li>
+              <a href="#">Blog</a>
+            </li>
+            <li>
+              <a href="/recipes">Recipes</a>
+            </li>
+            <li>
+              <a href="/ingredients">Ingredients</a>
+            </li>
+            <li>
+              <a href="/users">Users</a>
+            </li>
+          </ul>
+          <p>You are logged in as {{ session.username }}</p>
         <a href="/logout">Kirjaudu ulos</a>
+        </nav>
         {% endif %}
         <hr>
       </div>

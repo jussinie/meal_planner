@@ -45,3 +45,27 @@ body {
     height: 250px;
     margin: 10px;
 }
+
+.navbar {
+    background-color: #333333;
+    align-items: center;
+    display: flex;
+}
+
+.navbar ul {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li a {
+    padding: 12px;
+    display: block;
+}
+
+.navbar ul a:hover,
+.navbar ul a:focus {
+    background-color: #272727;
+}

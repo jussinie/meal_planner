@@ -4,6 +4,7 @@
 {% if session.username %}
 <div id="user_card">
     <title>{{ user.username }}</title>
+    <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="150px">
     <h3>{{ user.first_name}} {{ user.last_name }}</h3>
     <table class="user_tables">
         <tr>
