@@ -63,7 +63,23 @@ Ingredients saved: {{ count }}
 {% endif %}
 
 {% else %}
-<p>EI ADMIN</p>
+{% if ingredients_not_approved_user %}
+<h4>Your pending ingredients:</h4>
+{% for ingredient in ingredients_not_approved_user %}
+<tr>
+    <td>{{ingredient.name}}</td>
+    <td>{{ingredient.kcal}}</td>
+    <td>{{ingredient.carbs}}</td>
+    <td>{{ingredient.protein}}</td>
+    <td>{{ingredient.fat}}</td>
+    <td>{{ingredient.salt}}</td>
+    <td><form method="post" action="/ingredients">
+            <input id="ingredient_cancel_id" name="ingredient_canceled" type="hidden" value="{{ingredient.id}}" />
+            <button type="submit" onclick="return confirm('Are you sure you want to remove the ingredient?')">Cancel adding ingredient</button>
+            </form></td>
+</tr>
+{% endfor %}
+{% endif %}
 {% endif %}
 
 <a href="/add_ingredient">Siirry lisäämään uusi</a>

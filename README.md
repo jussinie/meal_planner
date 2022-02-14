@@ -26,7 +26,6 @@ Sovelluksen visuaalinen ilme on vielä melkoisen rustiikkinen, CSS-tyylejä on k
  - Käyttäjä voi etsiä reseptejä sanahaun avulla
    - Ei vielä rakennettuna.
  - Ylläpitäjä voi lisätä järjestelmään ruoka-aineita ja hyväksyä käyttäjien ruoka-aine-ehdotuksia.
-   - Käyttäjillä voi olla admin rooli jo nyt, mutta mitään siihen liittyvää toiminnallisuutta ei vielä ole valmiina.
 
 Tämä on alustava määrittely ja voi muuttua/täydentyä jonkin verran kurssin edetessä.
 

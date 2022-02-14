@@ -110,10 +110,19 @@ def ingredients():
             
             id = int(request.form.get('ingredient_removed'))
             print(id, 'removed')
-            # Update approval status in db
-            #sql_approve_ingredient = "UPDATE ingredients SET approved=true WHERE id=:id"
-            #db.session.execute(sql_approve_ingredient, {"id":id})
-            #db.session.commit()
+            sql_cancel_adding_ingredient = "DELETE FROM ingredients WHERE id=:id"
+            db.session.execute(sql_cancel_adding_ingredient, {"id":id})
+            db.session.commit()
+            return redirect("/ingredients")
+
+        elif (request.form.get('ingredient_canceled')):
+            
+            id = int(request.form.get('ingredient_canceled'))
+            print(id, 'canceled')
+            # Delete row from table, i.e. cancel adding ingredient
+            sql_cancel_adding_ingredient = "DELETE FROM ingredients WHERE id=:id"
+            db.session.execute(sql_cancel_adding_ingredient, {"id":id})
+            db.session.commit()
             return redirect("/ingredients")
 
     elif request.method == 'GET':
@@ -131,8 +140,14 @@ def ingredients():
         result_not_approved = db.session.execute("SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false")
         ingredients_not_approved = result_not_approved.fetchall()
 
+        # Fetch non_approved ingredients that logged in user has added
+        user_id = user[0]
+        sql_ingredient_added_by_user = "SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false AND added_by_user_id=:user_id"
+        result_not_approved_user = db.session.execute(sql_ingredient_added_by_user, {"user_id":user_id})
+        ingredients_not_approved_user = result_not_approved_user.fetchall()
+
         print(user)
-        return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients, ingredients_not_approved=ingredients_not_approved, user=user)
+        return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients, ingredients_not_approved=ingredients_not_approved, ingredients_not_approved_user=ingredients_not_approved_user,user=user)
 
     else:
         print("mentiin elseen")
@@ -144,14 +159,19 @@ def add_ingredient():
 
 @app.route("/send_ingredient", methods=["POST"])
 def send_ingredient():
+    username=session["username"]
+    sql_user = "SELECT * FROM users WHERE username=:username"
+    user_result = db.session.execute(sql_user, {"username":username})
+    user_id = user_result.fetchone()[0]
+
     name = request.form["name"]
     kcal = request.form["kcal"]
     carbs = request.form["carbs"]
     protein = request.form["protein"]
     fat = request.form["fat"]
     salt = request.form["salt"]
-    sql = "INSERT INTO ingredients (name, kcal, carbs, protein, fat, salt, approved) VALUES (:name, :kcal, :carbs, :protein, :fat, :salt, false)"
-    db.session.execute(sql, {"name":name, "kcal":kcal, "carbs":carbs, "protein":protein, "fat":fat, "salt":salt})
+    sql = "INSERT INTO ingredients (name, kcal, carbs, protein, fat, salt, approved, added_by_user_id) VALUES (:name, :kcal, :carbs, :protein, :fat, :salt, false, :user_id)"
+    db.session.execute(sql, {"name":name, "kcal":kcal, "carbs":carbs, "protein":protein, "fat":fat, "salt":salt, "user_id":user_id})
     db.session.commit()
     return redirect("/recipes")
 

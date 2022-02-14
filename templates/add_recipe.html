@@ -4,26 +4,56 @@
 {% if session.username %}
 <title>Add recipe</title>
 <h3>Add new recipe!</h3>
-<form action="/send_recipe" method="post">
-    Name: <input type="text" name="name"> <br>
-    Ingredient 1: 
-    <select name="ingredient">
-        {% for ingredient in ingredients %}
-        <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
-        {% endfor %}
-    </select>
-    Ingredient 2:
-    <select name="ingredient">
-        {% for ingredient in ingredients %}
-        <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
-        {% endfor %}
-    </select>
-    Amount in grams:
-    <input type="text" name="ingredient_amount">
-    <input type="text" name="ingredient_amount">
-    <input type="submit" value="Add recipe">
-
-</form>
+<table>
+    <form action="/send_recipe" method="post">
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                Amount in grams:
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name:
+            </td>
+            <td>
+                <input type="text" name="name"> <br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ingredient 1:
+            </td>
+            <td>
+                <select name="ingredient">
+                    {% for ingredient in ingredients %}
+                    <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <input type="text" name="ingredient_amount">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ingredient 2:
+            </td>
+            <td>
+                <select name="ingredient">
+                    {% for ingredient in ingredients %}
+                    <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <input type="text" name="ingredient_amount">
+            </td>
+        </tr> 
+        <input type="submit" value="Add recipe">
+    </form>
+</table>
 <a href="/">Siirry etusivulle</a>
 {% endif %}
 {% endblock %}
