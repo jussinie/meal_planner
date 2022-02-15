@@ -4,10 +4,12 @@
 {% if session.username %}
 <h3>{{ recipe_name }}</h3>
 <h4>Raaka-aineet</h4>
-{{ ingredient_name }} {{amount}}g
+{% for ingredient in ingredients %}
 <hr>
-<h5>{{ total }}</h5>
+{{ ingredient.ingredient_name }} {{ingredient.amount}}g <br>
+{% endfor %}
 <hr>
+<h5>Total calories for this recipe: {{ recipe_kcal }}</h5>
 <h4>Comments:</h4>
 {% for comment in comments %}
 <div id="comment_card">

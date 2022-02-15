@@ -47,7 +47,7 @@ body {
 }
 
 .navbar {
-    background-color: #333333;
+    background-color: wheat;
     align-items: center;
     display: flex;
 }
@@ -67,7 +67,7 @@ body {
 
 .navbar ul a:hover,
 .navbar ul a:focus {
-    background-color: #272727;
+    background-color: whitesmoke;
 }
 
 table {
@@ -85,4 +85,10 @@ td {
 
 tbody, td {
     text-align: center;
+}
+
+.user_profile {
+    margin-top: 3px;
+    background-color: brown;
+    vertical-align: middle;
 }

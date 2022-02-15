@@ -7,7 +7,7 @@ import ingredient_funcs
 
 @app.route("/")
 def index():
-    result = db.session.execute("SELECT name FROM recipes LIMIT 2")
+    result = db.session.execute("SELECT name FROM recipes LIMIT 3")
     recipes = result.fetchall()
     #print("session token", session["username"])
     #return f'heippa {user.name}, your BMR is {calculate_bmr(user.weight, user.height, user.age, True)}'
@@ -175,26 +175,40 @@ def send_recipe():
     name = request.form["name"]
     ingredients = request.form.getlist("ingredient")
     print(ingredients)
-    sql_ingredient_id = "SELECT id, name FROM ingredients WHERE name=:ingredient1"
-    sql_ingredient_id_result = db.session.execute(sql_ingredient_id, {"ingredient1":ingredients[0]})
-    ingredient_result = sql_ingredient_id_result.fetchone()[0]
-    print(ingredient_result)
+    # Fetching multiple ingredients from page
+    ingredient_ids = []
+    for ingredient in ingredients:
+        if ingredient != "":
+            sql_ingredient_id = "SELECT id, name FROM ingredients WHERE name=:ingredient"
+            sql_ingredient_id_result = db.session.execute(sql_ingredient_id, {"ingredient":ingredient})
+            ingredient_ids.append(sql_ingredient_id_result.fetchone()[0])
+    print(ingredient_ids)
+
+    # Fetching multiple ingredient amounts from page
     amounts = request.form.getlist("ingredient_amount")
+
     sql_recipe = "INSERT INTO recipes (name) VALUES (:name) RETURNING id"
     result = db.session.execute(sql_recipe, {"name":name})
     db.session.commit()
     recipe_id = result.fetchone()[0]
-    print(amounts[0], recipe_id, ingredient_result)
+    print(recipe_id, "recipe_id")
+
     # add recipe with ingredient(s)
-    sql_recipe_ingredients = "INSERT INTO recipes_ingredients (amount, recipe_id, ingredient_id) VALUES (:amount1, :recipe_id, :ingredient_id)"
-    db.session.execute(sql_recipe_ingredients, {"amount1":amounts[0], "recipe_id":recipe_id, "ingredient_id":ingredient_result})
-    # add total values from ingredient to recipe
-    kcal_sql = "SELECT kcal FROM ingredients WHERE id=:ingredient_id"
-    kcal_result = db.session.execute(kcal_sql, {"ingredient_id":ingredient_result})
-    kcal = int(kcal_result.fetchone()[0]) * int(amounts[0]) / 100.0
-    sql_update_recipe = "UPDATE RECIPES SET total_kcal=:kcal WHERE id=:recipe_id"
-    db.session.execute(sql_update_recipe, {"kcal":kcal, "recipe_id":recipe_id})
+    for ingredient_id, amount in zip(ingredient_ids, amounts):
+        sql_recipe_ingredients = "INSERT INTO recipes_ingredients (amount, recipe_id, ingredient_id) VALUES (:amount, :recipe_id, :ingredient_id)"
+        db.session.execute(sql_recipe_ingredients, {"amount":amount, "recipe_id":recipe_id, "ingredient_id":ingredient_id})
     db.session.commit()
+
+    # add total values from ingredient to recipe
+    total_kcal = 0
+    for ingredient_id in ingredient_ids:
+        kcal_sql = "SELECT kcal FROM ingredients WHERE id=:ingredient_id"
+        kcal_result = db.session.execute(kcal_sql, {"ingredient_id":ingredient_id})
+        total_kcal += int(kcal_result.fetchone()[0]) * int(amount) / 100.0
+    sql_update_recipe = "UPDATE RECIPES SET total_kcal=:total_kcal WHERE id=:recipe_id"
+    db.session.execute(sql_update_recipe, {"total_kcal":total_kcal, "recipe_id":recipe_id})
+    db.session.commit()
+
     return redirect("/recipes")
 
 @app.route("/<name>", methods=['GET', 'POST'])
@@ -252,26 +266,21 @@ def recipe(name):
     else: 
         sql = "SELECT r.name as recipe_name, i.name as ingredient_name, i.kcal, i.carbs, i.protein, i.fat, i.salt, ri.amount, r.id, r.total_kcal FROM recipes r, ingredients i, recipes_ingredients ri WHERE r.name=:name AND r.id = ri.recipe_id AND i.id = ri.ingredient_id"
         result = db.session.execute(sql, {"name":name})
-        recipes = result.fetchone()
-        print(recipes)
-        recipe_name = recipes[0]
-        ingredient_name = recipes[1]
-        kcal = recipes[2]
-        carbs = recipes[3]
-        protein = recipes[4]
-        fat = recipes[5]
-        salt = recipes[6]
-        amount = recipes[7]
-        recipe_id = recipes[8]
-        total_kcal = recipes[9]
-        total = f'Total calories {total_kcal}, carbohydrates {carbs/100*amount}, protein {protein/100*amount}, fat {fat/100*amount}.'
-        print(ingredient_name)
+        ingredients = result.fetchall()
+        sql = "SELECT r.name as recipe_name, i.name as ingredient_name, i.kcal, i.carbs, i.protein, i.fat, i.salt, ri.amount, r.id, r.total_kcal FROM recipes r, ingredients i, recipes_ingredients ri WHERE r.name=:name AND r.id = ri.recipe_id AND i.id = ri.ingredient_id"
+        result = db.session.execute(sql, {"name":name})
+        recipe = result.fetchone()
+        recipe_name = recipe[0]
+        recipe_id = recipe[8]
+        recipe_kcal = recipe[9]
+        #total = f'Total calories {total_kcal}, carbohydrates {carbs/100*amount}, protein {protein/100*amount}, fat {fat/100*amount}.'
+        #print(ingredient_name)
         #comments
         #sql_comments = "SELECT * FROM comments WHERE recipe_id=:recipe_id"
         sql_comments = "SELECT c.content, c.sent_at, u.first_name, u.last_name FROM comments c LEFT JOIN users u ON u.id=user_id WHERE recipe_id=:recipe_id ORDER BY c.sent_at"
         result_comments = db.session.execute(sql_comments, {"recipe_id":recipe_id})
         print("kommentointia", result_comments)
-        return render_template("recipe.html", recipe_name=recipe_name, ingredient_name=ingredient_name, amount=amount, total=total, comments=result_comments)    
+        return render_template("recipe.html", ingredients=ingredients, recipe_kcal=recipe_kcal, recipe_name=recipe_name, comments=result_comments)    
 
 @app.route("/send_comment", methods=["POST"])
 def send_comment():
