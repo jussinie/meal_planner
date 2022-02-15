@@ -5,12 +5,32 @@
 <title>Add ingredient</title>
 <h3>Add new ingredient!</h3>
 <form action="/send_ingredient" method="post">
-    Ingredient name: <input type="text" name="name">
-    Kilocalories: <input type="text" name="kcal">
-    Carbohydrates: <input type="text" name="carbs">
-    Protein: <input type="text" name="protein">
-    Fat: <input type="text" name="fat">
-    Salt: <input type="text" name="salt">
+    <table>
+        <tr>
+            <td>Ingredient name: </td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td>Kilocalories: </td>
+            <td><input type="text" name="kcal"></td>
+        </tr>
+        <tr>
+            <td>Carbohydrates:</td>
+            <td><input type="text" name="carbs"></td>
+        </tr>
+        <tr>
+            <td>Protein:</td>
+            <td><input type="text" name="protein"></td>
+        </tr>
+        <tr>
+            <td>Fat:</td>
+            <td><input type="text" name="fat"></td>
+        </tr>
+        <tr>
+            <td>Salt:</td>
+            <td><input type="text" name="salt"></td>
+        </tr>
+    </table>
     <input type="submit" value="Add ingredient">
 </form>
 

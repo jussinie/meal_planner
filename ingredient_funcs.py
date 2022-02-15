@@ -33,7 +33,7 @@ def get_non_approved_ingredients():
     result_not_approved = db.session.execute("SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false")
     return result_not_approved.fetchall()
 
-def get_non_approved_ingredients_from_user(id: int):
+def get_non_approved_ingredients_from_user(user_id: int):
     sql_ingredient_added_by_user = "SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false AND added_by_user_id=:user_id"
     result_not_approved_user = db.session.execute(sql_ingredient_added_by_user, {"user_id":user_id})
     return result_not_approved_user.fetchall()

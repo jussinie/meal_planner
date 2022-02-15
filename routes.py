@@ -93,6 +93,8 @@ def send_login():
             print("invalid password!")
             return redirect("/login")
 
+# ROUTES REGARDING INGREDIENTS
+
 @app.route("/ingredients", methods=['GET', 'POST'])
 def ingredients():
     if request.method == 'POST':
@@ -117,26 +119,18 @@ def ingredients():
 
     elif request.method == 'GET':
         # Fetch user
-        username=session["username"]
-        sql_user = "SELECT * FROM users WHERE username=:username"
-        user_result = db.session.execute(sql_user, {"username":username})
-        user = user_result.fetchone()
+        username = session["username"]
+        user_id = ingredient_funcs.get_user(username)
 
         # Fetch approved ingredients
-        result = db.session.execute("SELECT name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=true")
-        ingredients = result.fetchall()
+        ingredients = ingredient_funcs.get_approved_ingredients()
 
         # Fetch non_approved ingredients
-        result_not_approved = db.session.execute("SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false")
-        ingredients_not_approved = result_not_approved.fetchall()
+        ingredients_not_approved = ingredient_funcs.get_non_approved_ingredients()
 
         # Fetch non_approved ingredients that logged in user has added
-        user_id = user[0]
-        sql_ingredient_added_by_user = "SELECT id, name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=false AND added_by_user_id=:user_id"
-        result_not_approved_user = db.session.execute(sql_ingredient_added_by_user, {"user_id":user_id})
-        ingredients_not_approved_user = result_not_approved_user.fetchall()
-
-        print(user)
+        ingredients_not_approved_user = ingredient_funcs.get_non_approved_ingredients_from_user(user_id)
+        
         return render_template("ingredients.html", count=len(ingredients), ingredients=ingredients, ingredients_not_approved=ingredients_not_approved, ingredients_not_approved_user=ingredients_not_approved_user,user=user)
 
     else:
@@ -160,7 +154,9 @@ def send_ingredient():
     salt = request.form["salt"]
 
     ingredient_funcs.add_ingredient(name, kcal, carbs, protein, fat, salt, user_id)
-    return redirect("/recipes")
+    return redirect("/ingredients")
+
+# ROUTES REGARDING RECIPES
 
 @app.route("/recipes")
 def recipes():

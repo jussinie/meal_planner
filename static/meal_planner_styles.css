@@ -69,3 +69,20 @@ body {
 .navbar ul a:focus {
     background-color: #272727;
 }
+
+table {
+    margin: 2px;
+    background-color: azure;
+    border-style: solid;
+    border-color: cadetblue;
+    border-radius: 1px;
+}
+
+td {
+    padding: 1px;
+    margin: 2px;
+}
+
+tbody, td {
+    text-align: center;
+}
