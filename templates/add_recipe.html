@@ -4,8 +4,9 @@
 {% if session.username %}
 <title>Add recipe</title>
 <h3>Add new recipe!</h3>
+{{ error }} <br>
 <table>
-    <form action="/send_recipe" method="post">
+    <form name="recipe_form" action="/send_recipe" method="post" onsubmit="return validateForm()">
         <tr>
             <td></td>
             <td></td>
@@ -55,5 +56,20 @@
     </form>
 </table>
 <a href="/">Siirry etusivulle</a>
+<button onclick="myfunction()">testi</button>
+<script>
+    function myfunction() {
+        alert("This is an alert");
+    }
+    </script>
+<script>
+    function validateForm() {
+        let x = document.forms["recipe_form"]["name"].value;
+        if (x == "") {
+            alert("Name must be filled");
+            return false;
+        }
+    }
+</script>
 {% endif %}
 {% endblock %}

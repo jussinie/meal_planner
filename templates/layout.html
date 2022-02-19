@@ -15,6 +15,9 @@
           <a class="brand" href="#">RS</a>
           <ul>
             <li>
+              <a href="/users/{{ session.username }}">User</a>
+            </li>
+            <li>
               <a href="/recipes">Recipes</a>
             </li>
             <li>
@@ -23,9 +26,14 @@
             <li>
               <a href="/users">Users</a>
             </li>
+            <li>
+              <div id="navbar_user">
+                <p>You are logged in as {{ session.username }}</p>
+                <a href="/logout">Kirjaudu ulos</a>
+              </div>
+            </li>
           </ul>
-          <p>You are logged in as {{ session.username }}</p>
-        <a href="/logout">Kirjaudu ulos</a>
+
         </nav>
         {% endif %}
         <hr>

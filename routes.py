@@ -1,9 +1,10 @@
 from sqlalchemy import null
 from app import app
-from flask import redirect, render_template, request, session, url_for
+from flask import redirect, render_template, request, session, url_for, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 import ingredient_funcs
+import recipes
 
 @app.route("/")
 def index():
@@ -147,7 +148,7 @@ def send_ingredient():
     user_id = ingredient_funcs.get_user(username)
 
     name = request.form["name"]
-    kcal = request.form["kcal"]
+    kcal = request.form["kcal"] 
     carbs = request.form["carbs"]
     protein = request.form["protein"]
     fat = request.form["fat"]
@@ -159,15 +160,14 @@ def send_ingredient():
 # ROUTES REGARDING RECIPES
 
 @app.route("/recipes")
-def recipes():
-    result = db.session.execute("SELECT name FROM recipes")
-    recipes = result.fetchall()
-    return render_template("recipes.html", count=len(recipes), recipes=recipes)
+def show_recipes():
+    recipe_names = recipes.get_all_recipe_names()
+    print(recipe_names)
+    return render_template("recipes.html", count=len(recipe_names), recipes=recipe_names)
 
 @app.route("/add_recipe")
 def add_recipe():
-    result = db.session.execute("SELECT name FROM ingredients")
-    ingredients = result.fetchall()
+    ingredients = ingredient_funcs.get_ingredient_names()
     return render_template("add_recipe.html", ingredients=ingredients)
 
 @app.route("/send_recipe", methods=["POST"])
@@ -186,6 +186,10 @@ def send_recipe():
 
     # Fetching multiple ingredient amounts from page
     amounts = request.form.getlist("ingredient_amount")
+
+    #for amount in amounts:
+    #    if (len(amount) > 4):
+    #        return redirect("/add_recipe.html")
 
     sql_recipe = "INSERT INTO recipes (name) VALUES (:name) RETURNING id"
     result = db.session.execute(sql_recipe, {"name":name})

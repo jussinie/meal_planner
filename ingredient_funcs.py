@@ -5,6 +5,10 @@ def get_user(username: str):
     user_result = db.session.execute(sql_user, {"username":username})
     return user_result.fetchone()[0]
 
+def get_ingredient_names():
+    result = db.session.execute("SELECT name FROM ingredients")
+    return result.fetchall()
+
 def add_ingredient(name, kcal, carbs, protein, fat, salt, user_id):
     sql = "INSERT INTO ingredients (name, kcal, carbs, protein, fat, salt, approved, added_by_user_id) VALUES (:name, :kcal, :carbs, :protein, :fat, :salt, false, :user_id)"
     db.session.execute(sql, {"name":name, "kcal":kcal, "carbs":carbs, "protein":protein, "fat":fat, "salt":salt, "user_id":user_id})
