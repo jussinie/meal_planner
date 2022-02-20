@@ -19,3 +19,12 @@ def add_user(
     sql = "INSERT INTO users (first_name, last_name, username, password, height, weight, age, gender, bmr) VALUES (:first_name, :last_name, :username, :password, :height, :weight, :age, :gender, :bmr)"
     db.session.execute(sql, {"first_name":first_name, "last_name":last_name, "username":username, "password":hash_value, "height":height, "weight":weight, "age":age, "gender":gender, "bmr":bmr })
     db.session.commit()
+
+def get_one_user(username: str):
+    sql = "SELECT id, first_name, last_name, username, height, weight, age, gender, admin, bmr FROM users WHERE username=:username"
+    result = db.session.execute(sql, {"username":username})
+    return result.fetchone()
+
+def get_all_usernames():
+    result = db.session.execute("SELECT username FROM users")
+    return result.fetchall()

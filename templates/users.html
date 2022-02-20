@@ -4,7 +4,7 @@
 <h3>test</h3>
 Users: {{ count }}
 <hr>
-{% for user in all_users %}
+{% for user in all_usernames %}
 <div class="user_profile">
     <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="30px">
     <a href="/users/{{ user.username }}">{{ user.username }}</a> 

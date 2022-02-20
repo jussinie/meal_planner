@@ -9,7 +9,7 @@ import users
 
 @app.route("/")
 def index():
-    all_recipes = recipes.get_all_recipe_names_limit3
+    all_recipes = recipes.get_all_recipe_names_limit3()
     return render_template("index.html", all_recipes=all_recipes)
 
 @app.route("/new_user")
@@ -48,20 +48,13 @@ def send():
 
 @app.route("/users")
 def all_users():
-    result = db.session.execute("SELECT * FROM users")
-    all_users = result.fetchall()
-    return render_template("users.html", count=len(all_users), all_users=all_users)
+    all_usernames = users.get_all_usernames()
+    return render_template("users.html", count=len(all_usernames), all_usernames=all_usernames)
 
 @app.route("/users/<username>")
-def user(username):
-    sql = "SELECT * FROM users WHERE username=:username"
-    result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()
-    print(user)
-    sql_meals = "SELECT r.name, r.total_kcal FROM recipes r, users_recipes ur WHERE user_id=:user_id AND r.id = ur.recipe_id"
-    result_meals = db.session.execute(sql_meals, {"user_id":user[0]})
-    meals = result_meals.fetchall()
-    print(meals)
+def user_page(username):
+    user = users.get_one_user(username)
+    meals = recipes.get_users_recipes(user[0])
     return render_template("user.html", user=user, meals=meals)
 
 @app.route("/login")
@@ -117,7 +110,7 @@ def ingredients():
     elif request.method == 'GET':
         # Fetch user
         username = session["username"]
-        user_id = ingredient_funcs.get_user(username)
+        user = users.get_one_user(username)
 
         # Fetch approved ingredients
         approved_ingredients = ingredient_funcs.get_approved_ingredients()
@@ -126,8 +119,7 @@ def ingredients():
         ingredients_not_approved = ingredient_funcs.get_non_approved_ingredients()
 
         # Fetch non_approved ingredients that logged in user has added
-        ingredients_not_approved_user = ingredient_funcs.get_non_approved_ingredients_from_user(user_id)
-        
+        ingredients_not_approved_user = ingredient_funcs.get_non_approved_ingredients_from_user(user[0])
         return render_template("ingredients.html", count=len(approved_ingredients), approved_ingredients=approved_ingredients, ingredients_not_approved=ingredients_not_approved, ingredients_not_approved_user=ingredients_not_approved_user,user=user)
 
     else:
@@ -141,7 +133,7 @@ def add_ingredient():
 @app.route("/send_ingredient", methods=["POST"])
 def send_ingredient():
     username=session["username"]
-    user_id = ingredient_funcs.get_user(username)
+    user_id = users.get_one_user(username)[0]
 
     name = request.form["name"]
     kcal = request.form["kcal"] 

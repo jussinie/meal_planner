@@ -1,10 +1,5 @@
 from db import db
 
-def get_user(username: str):
-    sql_user = "SELECT id FROM users WHERE username=:username"
-    user_result = db.session.execute(sql_user, {"username":username})
-    return user_result.fetchone()[0]
-    
 def get_one_ingredient_with_id(ingredient_id: int):
     kcal_sql = "SELECT kcal FROM ingredients WHERE id=:ingredient_id"
     return db.session.execute(kcal_sql, {"ingredient_id":ingredient_id})
@@ -28,19 +23,19 @@ def add_ingredient(name, kcal, carbs, protein, fat, salt, user_id):
     db.session.execute(sql, {"name":name, "kcal":kcal, "carbs":carbs, "protein":protein, "fat":fat, "salt":salt, "user_id":user_id})
     db.session.commit()
 
-def set_ingredient_as_approved(id: int):
+def set_ingredient_as_approved(ingredient_id: int):
     sql_approve_ingredient = "UPDATE ingredients SET approved=true WHERE id=:id"
-    db.session.execute(sql_approve_ingredient, {"id":id})
+    db.session.execute(sql_approve_ingredient, {"id":ingredient_id})
     db.session.commit()
 
-def remove_ingredient(id: int):
+def remove_ingredient(ingredient_id: int):
     sql_cancel_adding_ingredient = "DELETE FROM ingredients WHERE id=:id"
-    db.session.execute(sql_cancel_adding_ingredient, {"id":id})
+    db.session.execute(sql_cancel_adding_ingredient, {"id":ingredient_id})
     db.session.commit()
 
-def cancel_approval(id: int):
+def cancel_approval(ingredient_id: int):
     sql_cancel_adding_ingredient = "DELETE FROM ingredients WHERE id=:id"
-    db.session.execute(sql_cancel_adding_ingredient, {"id":id})
+    db.session.execute(sql_cancel_adding_ingredient, {"id":ingredient_id})
     db.session.commit()
 
 def get_approved_ingredients():
