@@ -221,7 +221,8 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 CREATE TABLE public.users_recipes (
     id integer NOT NULL,
     user_id integer,
-    recipe_id integer
+    recipe_id integer,
+    visible boolean
 );
 
 
