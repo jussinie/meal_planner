@@ -28,7 +28,8 @@ def send_login():
     if check_password_hash(hash_value, password):
         print("valid password!")
         session["username"] = username
-        return redirect(url_for('user', username=username))
+        return redirect("/")
+        #return redirect(url_for('user', username=username))
     print("invalid password!")
     return redirect("/login")
 

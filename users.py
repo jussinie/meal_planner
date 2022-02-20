@@ -17,9 +17,9 @@ def add_user(
             bmr: float
             ):
     sql = """INSERT INTO users (first_name, last_name, username,
-        password, height, weight, age, gender, bmr) 
+        password, height, weight, age, gender, admin, bmr) 
         VALUES (:first_name, :last_name, :username, :password,
-        :height, :weight, :age, :gender, :bmr)"""
+        :height, :weight, :age, :gender, true, :bmr)"""
     db.session.execute(sql, {"first_name":first_name, "last_name":last_name, "username":username, "password":hash_value, "height":height, "weight":weight, "age":age, "gender":gender, "bmr":bmr })
     db.session.commit()
 
