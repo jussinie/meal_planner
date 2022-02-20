@@ -4,7 +4,7 @@
 {% if session.username %}
 <h3>{{ recipe_name }}</h3>
 <h4>Raaka-aineet</h4>
-{% for ingredient in ingredients %}
+{% for ingredient in all_ingredients %}
 <hr>
 {{ ingredient.ingredient_name }} {{ingredient.amount}}g <br>
 {% endfor %}
@@ -22,13 +22,13 @@
 </div>
 {% endfor %}
 
-<form action="/{{ recipe_name }}" method="post">
+<form action="/recipes/{{ recipe_name }}" method="post">
     Comment: <br>
     <input type="text" name="comment">
     <input type="submit" value="Add comment" name="submit_comment">
 </form>
 
-<form action="/{{ recipe_name }}" method="post">
+<form action="/recipes/{{ recipe_name }}" method="post">
     <input type="submit" value="Add to planner" name="add_recipe_to_plan">
 </form>
 

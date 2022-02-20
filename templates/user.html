@@ -32,7 +32,7 @@
     <p></p>
     <h3>Meals:</h3>
     {% for meal in meals %}
-    <a href="/{{ meal.name }}">{{ meal.name }}</a>
+    <a href="/recipes/{{ meal.name }}">{{ meal.name }}</a>
     <p>Calories: {{ meal.total_kcal }}</p>
     <p>Protein:</p> 
     {% endfor %}

@@ -14,7 +14,7 @@ Ingredients saved: {{ count }}
         <th>Fat</th>
         <th>Salt</th>
     </tr>
-    {% for ingredient in ingredients %}
+    {% for ingredient in approved_ingredients %}
     <tr>
         <td>{{ ingredient.name}}</td>
         <td>{{ingredient.kcal}}</td>

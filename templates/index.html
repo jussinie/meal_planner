@@ -18,7 +18,7 @@
 
 <div>
     <p>Freshly added recipes:</p> 
-{% for recipe in recipes %}
+{% for recipe in all_recipes %}
 <a href="{{ recipe.name }}">{{ recipe.name }}</a> <br>
 {% endfor %}
 {% endif %}

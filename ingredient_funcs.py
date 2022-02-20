@@ -4,9 +4,23 @@ def get_user(username: str):
     sql_user = "SELECT id FROM users WHERE username=:username"
     user_result = db.session.execute(sql_user, {"username":username})
     return user_result.fetchone()[0]
+    
+def get_one_ingredient_with_id(ingredient_id: int):
+    kcal_sql = "SELECT kcal FROM ingredients WHERE id=:ingredient_id"
+    return db.session.execute(kcal_sql, {"ingredient_id":ingredient_id})
+
+def get_one_ingredient_with_name(ingredient: str):
+    sql_ingredient_id = "SELECT id, name FROM ingredients WHERE name=:ingredient"
+    sql_ingredient_id_result = db.session.execute(sql_ingredient_id, {"ingredient":ingredient})
+    return sql_ingredient_id_result.fetchone()[0]
 
 def get_ingredient_names():
     result = db.session.execute("SELECT name FROM ingredients")
+    return result.fetchall()
+
+def get_all_ingredients_for_recipe(name: str):
+    sql = "SELECT r.name as recipe_name, i.name as ingredient_name, i.kcal, i.carbs, i.protein, i.fat, i.salt, ri.amount, r.id, r.total_kcal FROM recipes r, ingredients i, recipes_ingredients ri WHERE r.name=:name AND r.id = ri.recipe_id AND i.id = ri.ingredient_id"
+    result = db.session.execute(sql, {"name":name})
     return result.fetchall()
 
 def add_ingredient(name, kcal, carbs, protein, fat, salt, user_id):

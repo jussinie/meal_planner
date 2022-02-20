@@ -5,8 +5,8 @@
 <title>Recipes</title>
 Recipes saved: {{ count }}
 <hr>
-{% for recipe in recipes %}
-<a href="{{ recipe }}">{{ recipe }}</a> 
+{% for recipe in recipe_names %}
+<a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a> 
 <hr>
 {% endfor %}
 <a href="/add_recipe">Siirry lisäämään uusi</a>
