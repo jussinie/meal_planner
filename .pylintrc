@@ -6,3 +6,5 @@ disable=missing-module-docstring,
     cyclic-import
 
 ignored-classes=scoped_session
+
+ignore=app.py
