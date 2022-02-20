@@ -6,6 +6,7 @@ Tässä sovelluksessa käyttäjät voivat luoda itselleen ruokalistan, jonka avu
 
 Sovellus toimii osoitteessa https://secret-journey-84354.herokuapp.com/.
 Mikäli käyttäjän lisääminen ei toimi, sovellusta voi testata tunnuksilla adminmies / adminmies.
+Huom! Kaikki luodut käyttäjät saavat tässä vaiheessa automaattisesti admin-roolin, eli ainesosien hyväksyminen / hylkääminen on mahdollista.
 Sovelluksen visuaalinen ilme on *edelleenkin* melkoisen rustiikkinen, CSS-tyylejä on käytetty asioiden testaamiseen eikä ulkoasua ole vielä hiottu. 
 Valitettavasti en päässyt tässä palautuksessa niin pitkälle kuin toivoin, joten loppupalautukseen hiomista jäi hieman enemmän. 
 
