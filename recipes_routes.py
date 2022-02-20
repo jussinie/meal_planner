@@ -42,17 +42,19 @@ def send_recipe():
 
     # add recipe with ingredient(s)
     for ingredient_id, amount in zip(ingredient_ids, amounts):
-        recipes.add_recipe_with_ingredients(amount, recipe_id, ingredient_id)
+        if amount != "":
+            recipes.add_recipe_with_ingredients(amount, recipe_id, ingredient_id)
     db.session.commit()
 
     # add total values from ingredient to recipe
     total_kcal = 0
-    for ingredient_id in ingredient_ids:
-        kcal_result = ingredient_funcs.get_one_ingredient_with_id(ingredient_id)
-        total_kcal += int(kcal_result.fetchone()[0]) * int(amount) / 100.0
+    for ingredient_id, amount in zip(ingredient_ids, amounts):
+        if amount != "":
+            kcal_result = ingredient_funcs.get_one_ingredient_with_id(ingredient_id)
+            total_kcal += int(kcal_result.fetchone()[0]) * int(amount) / 100.0
     recipes.update_recipe_total_kcal(total_kcal, recipe_id)
 
-    return redirect("/recipes")
+    return redirect(f"/recipes/{name}")
 
 @app.route("/recipes/<name>", methods=['GET', 'POST'])
 def recipe(name):
@@ -70,7 +72,7 @@ def recipe(name):
             recipe_id = recipes.get_recipe_id_with_name(name)
             #Add to recipes
             recipes.add_recipe_to_meal_plan(user_id, recipe_id)
-            return redirect("/recipes")
+            return redirect(f"/users/{username}")
         else:
             print("pieleen menee")
 
@@ -81,3 +83,11 @@ def recipe(name):
         recipe_name = recipe_data[1]
         recipe_kcal = recipe_data[2]
         return render_template("recipe.html", all_ingredients=all_ingredients, recipe_kcal=recipe_kcal, recipe_name=recipe_name, comments=comments.get_all_comments(recipe_id))
+
+@app.route("/remove_recipe/<name>", methods=['POST'])
+def remove_recipe(name):
+    username = session["username"]
+    user_id = users.get_user_id_with_username(username)
+    recipe_id = recipes.get_recipe_id_with_name(name)
+    users.remove_meal_from_plan(user_id, recipe_id)
+    return redirect(f"/users/{username}")

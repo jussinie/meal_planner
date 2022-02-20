@@ -51,7 +51,52 @@
             <td>
                 <input type="text" name="ingredient_amount">
             </td>
-        </tr> 
+        </tr>
+        <tr>
+            <td>
+                Ingredient 3:
+            </td>
+            <td>
+                <select name="ingredient">
+                    {% for ingredient in all_ingredients %}
+                    <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <input type="text" name="ingredient_amount">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ingredient 4:
+            </td>
+            <td>
+                <select name="ingredient">
+                    {% for ingredient in all_ingredients %}
+                    <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <input type="text" name="ingredient_amount">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ingredient 5:
+            </td>
+            <td>
+                <select name="ingredient">
+                    {% for ingredient in all_ingredients %}
+                    <option value="{{ ingredient.name }}">{{ingredient.name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <input type="text" name="ingredient_amount">
+            </td>
+        </tr>    
         <input type="submit" value="Add recipe">
     </form>
 </table>

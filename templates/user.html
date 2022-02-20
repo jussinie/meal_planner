@@ -32,14 +32,18 @@
     <p></p>
     <h3>Meals:</h3>
     {% for meal in meals %}
-    <a href="/recipes/{{ meal.name }}">{{ meal.name }}</a>
-    <p>Calories: {{ meal.total_kcal }}</p>
-    <p>Protein:</p> 
+    <div class="meal_card">
+        <a href="/recipes/{{ meal.name }}">{{ meal.name }}</a>
+        <p>Calories: {{ meal.total_kcal }}</p>
+        <p>Protein:</p>
+        <form action="/remove_recipe/{{ meal.name }}" method="post">
+            <input type="submit" value="Delete meal from Planner" name="{{ user.username }}/{{ meal.name }}">
+        </form> 
+    </div>
     {% endfor %}
 
-
-
-
+    <h4>Total calories {{ total_kcal }}</h4>
+    <h4>Left in daily budget: {{ budget_left }}</h4>
 
     <table>
         <thead><h4>Meal Planner:</h4></thead>

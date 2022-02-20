@@ -25,13 +25,17 @@ def add_recipe_and_return_id(name: str):
     return result.fetchone()[0]
 
 def get_users_recipes(user_id: int):
-    sql_meals = "SELECT r.name, r.total_kcal FROM recipes r, users_recipes ur WHERE user_id=:user_id AND r.id = ur.recipe_id"
+    sql_meals = """SELECT r.name, r.total_kcal FROM recipes r, users_recipes ur 
+        WHERE user_id=:user_id AND r.id = ur.recipe_id AND ur.visible=true"""
     result_meals = db.session.execute(sql_meals, {"user_id":user_id})
     return result_meals.fetchall()
 
 def add_recipe_to_meal_plan(user_id: int, recipe_id: int):
     sql_add_to_plan = "INSERT INTO users_recipes (user_id, recipe_id) VALUES (:user_id, :recipe_id)"
     db.session.execute(sql_add_to_plan, {"user_id":user_id, "recipe_id":recipe_id})
+    db.session.commit()
+    sql_set_visibility = "UPDATE users_recipes SET visible=true WHERE user_id=:user_id AND recipe_id=:recipe_id"
+    db.session.execute(sql_set_visibility, {"user_id":user_id, "recipe_id":recipe_id})
     db.session.commit()
 
 def add_recipe_with_ingredients(amount: int, recipe_id: int, ingredient_id: int):
