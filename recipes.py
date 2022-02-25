@@ -18,6 +18,10 @@ def get_recipe_data_with_name(name: str):
     recipe_id_result = db.session.execute(sql_recipe_id, {"name":name})
     return recipe_id_result.fetchone()
 
+def get_recipe_count():
+    result = db.session.execute("SELECT COUNT(name) from recipes")
+    return result.fetchone()[0]
+
 def add_recipe_and_return_id(name: str):
     sql_recipe = "INSERT INTO recipes (name) VALUES (:name) RETURNING id"
     result = db.session.execute(sql_recipe, {"name":name})

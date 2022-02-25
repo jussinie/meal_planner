@@ -38,6 +38,10 @@ def cancel_approval(ingredient_id: int):
     db.session.execute(sql_cancel_adding_ingredient, {"id":ingredient_id})
     db.session.commit()
 
+def approved_ingredient_count():
+    result = db.session.execute("SELECT COUNT(name) from ingredients WHERE approved=true")
+    return result.fetchone()[0]
+
 def get_approved_ingredients():
     result = db.session.execute("SELECT name, kcal, carbs, protein, fat, salt FROM ingredients WHERE approved=true")
     return result.fetchall()

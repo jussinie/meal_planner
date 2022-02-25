@@ -3,13 +3,16 @@
 {% block content %}
 {% if session.username %}
 <title>Recipes</title>
-Recipes saved: {{ count }}
-<hr>
-{% for recipe in recipe_names %}
-<a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a> 
-<hr>
-{% endfor %}
-<a href="/add_recipe">Siirry lisäämään uusi</a>
-<a href="/">Back to landing page</a>
+    <div class="content">
+    Recipes saved: {{ count }}
+    <hr>
+    {% for recipe in recipe_names %}
+    <div class="recipe_card">
+        <a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a> 
+    </div>
+    {% endfor %}
+    <a href="/add_recipe">Siirry lisäämään uusi</a>
+    <a href="/">Back to landing page</a>
+</div>
 {% endif %}
 {% endblock %}

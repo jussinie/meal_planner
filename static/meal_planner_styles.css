@@ -8,7 +8,25 @@
 }
 
 body {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 300;
     background-color: floralwhite;
+}
+
+.content {
+    text-align: center;
+    background-color: blue;
+}
+
+.recipe_card {
+    border-style: double;
+    border-radius: 2px;
+    background-color: aqua;
+    width: 50%;
+    margin: auto;
+    margin-top: 3px;
+    min-height: 30px;
+    vertical-align: middle;
 }
 
 #comment_card {

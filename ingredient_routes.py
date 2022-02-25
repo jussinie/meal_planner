@@ -40,7 +40,7 @@ def ingredients():
         ingredients_not_approved_user = ingredient_funcs.get_non_approved_ingredients_from_user(user[0])
         return render_template(
             "ingredients.html",
-            count=len(approved_ingredients),
+            count=ingredient_funcs.approved_ingredient_count(),
             approved_ingredients=approved_ingredients,
             ingredients_not_approved=ingredients_not_approved,
             ingredients_not_approved_user=ingredients_not_approved_user,

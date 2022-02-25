@@ -10,7 +10,7 @@ import users
 def show_recipes():
     recipe_names = recipes.get_all_recipe_names()
     print(recipe_names)
-    return render_template("recipes.html", count=len(recipe_names), recipe_names=recipe_names)
+    return render_template("recipes.html", count=recipes.get_recipe_count(), recipe_names=recipe_names)
 
 @app.route("/add_recipe")
 def add_recipe():
