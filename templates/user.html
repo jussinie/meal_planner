@@ -6,7 +6,7 @@
     <title>{{ user.username }}</title>
     <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="150px">
     <h3>{{ user.first_name}} {{ user.last_name }}</h3>
-    <table class="user_tables">
+    <table class="table">
         <tr>
             <td>Height: </td>
             <td>{{ user.height }}</td>
@@ -33,11 +33,11 @@
     <h3>Meals:</h3>
     {% for meal in meals %}
     <div class="meal_card">
-        <a href="/recipes/{{ meal.name }}">{{ meal.name }}</a>
+        <h4><a href="/recipes/{{ meal.name }}">{{ meal.name }}</a></h4>
         <p>Calories: {{ meal.total_kcal }}</p>
         <p>Protein:</p>
         <form action="/remove_recipe/{{ meal.name }}" method="post">
-            <input type="submit" value="Delete meal from Planner" name="{{ user.username }}/{{ meal.name }}">
+            <input type="submit" class="btn btn-danger" value="Delete meal from Planner" name="{{ user.username }}/{{ meal.name }}">
         </form> 
     </div>
     {% endfor %}
@@ -45,7 +45,7 @@
     <h4>Total calories {{ total_kcal }}</h4>
     <h4>Left in daily budget: {{ budget_left }}</h4>
 
-<a href="/">To landing page</a>
+    <a href="/" class="btn btn-primary">To front page</a>
 </div>
 {% endif %}
 {% endblock %}

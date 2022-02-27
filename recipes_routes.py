@@ -8,9 +8,9 @@ import users
 
 @app.route("/recipes")
 def show_recipes():
-    recipe_names = recipes.get_all_recipe_names()
-    print(recipe_names)
-    return render_template("recipes.html", count=recipes.get_recipe_count(), recipe_names=recipe_names)
+    recipe_infos = recipes.get_all_recipe_info()
+    print(recipe_infos)
+    return render_template("recipes.html", count=recipes.get_recipe_count(), recipe_infos=recipe_infos)
 
 @app.route("/add_recipe")
 def add_recipe():
@@ -20,6 +20,7 @@ def add_recipe():
 
 @app.route("/send_recipe", methods=["POST"])
 def send_recipe():
+    user_id = users.get_user_id_with_username(session["username"])
     name = request.form["name"]
     ingredients = request.form.getlist("ingredient")
     print(ingredients)
@@ -37,7 +38,7 @@ def send_recipe():
     #    if (len(amount) > 4):
     #        return redirect("/add_recipe.html")
 
-    recipe_id = recipes.add_recipe_and_return_id(name)
+    recipe_id = recipes.add_recipe_and_return_id(name, user_id)
     print(recipe_id, "recipe_id")
 
     # add recipe with ingredient(s)

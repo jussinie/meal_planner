@@ -4,6 +4,11 @@ def get_all_recipe_names():
     result = db.session.execute("SELECT name FROM recipes")
     return result.fetchall()
 
+
+def get_all_recipe_info():
+    result = db.session.execute("SELECT r.name, r.added_by, u.username, r.total_kcal, r.comment_amount FROM recipes r LEFT JOIN users u ON r.added_by=u.id ORDER BY comment_amount")
+    return result.fetchall()
+
 def get_all_recipe_names_limit3():
     result = db.session.execute("SELECT name FROM recipes LIMIT 3")
     return result.fetchall()
@@ -22,9 +27,9 @@ def get_recipe_count():
     result = db.session.execute("SELECT COUNT(name) from recipes")
     return result.fetchone()[0]
 
-def add_recipe_and_return_id(name: str):
-    sql_recipe = "INSERT INTO recipes (name) VALUES (:name) RETURNING id"
-    result = db.session.execute(sql_recipe, {"name":name})
+def add_recipe_and_return_id(name: str, user_id: int):
+    sql_recipe = "INSERT INTO recipes (name, added_by) VALUES (:name, :added_by) RETURNING id"
+    result = db.session.execute(sql_recipe, {"name":name, "added_by":user_id})
     db.session.commit()
     return result.fetchone()[0]
 

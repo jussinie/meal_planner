@@ -6,9 +6,8 @@ Users: {{ count }}
 <hr>
 {% for user in all_usernames %}
 <div class="user_profile">
-    <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="30px">
+    <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="30px"> <br>
     <a href="/users/{{ user.username }}">{{ user.username }}</a> 
-    <hr>
 </div>
 {% endfor %}
 {% endblock %}

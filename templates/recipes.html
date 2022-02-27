@@ -6,13 +6,16 @@
     <div class="content">
     Recipes saved: {{ count }}
     <hr>
-    {% for recipe in recipe_names %}
+    <a href="/add_recipe" class="btn btn-primary">Add new</a>
+    <a href="/" class="btn btn-primary">To front page</a> <br>
+    {% for recipe in recipe_infos %}
     <div class="recipe_card">
-        <a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a> 
+        <a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a>
+        <p>Total calories: {{ recipe.total_kcal }}</p> 
+        <p>Added by: {{ recipe.username }}</p>
+        <p>Comments: {{ recipe.comment_amount }}</p>  
     </div>
     {% endfor %}
-    <a href="/add_recipe">Siirry lisäämään uusi</a>
-    <a href="/">Back to landing page</a>
 </div>
 {% endif %}
 {% endblock %}

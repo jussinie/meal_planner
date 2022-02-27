@@ -14,10 +14,27 @@ body {
 }
 
 .content {
+    margin: auto;
     text-align: center;
-    background-color: blue;
 }
 
+.table_container {
+    margin: auto;
+    width: 50%;
+}
+
+.add_ingredient_card, .pending_ingredient_card, .recipe_card {
+    margin: auto;
+    margin-bottom: 10px;
+    width: 40%;
+    text-align: center;
+    align-items: center;
+    background-color: bisque;
+    border-radius: 15px;
+    padding-bottom: 10px;
+}
+
+/*
 .recipe_card {
     border-style: double;
     border-radius: 2px;
@@ -27,7 +44,7 @@ body {
     margin-top: 3px;
     min-height: 30px;
     vertical-align: middle;
-}
+} */
 
 #comment_card {
     margin: 10px;
@@ -43,15 +60,18 @@ body {
     padding: 5px;
     border-style: solid;
     border-width: 1px;
-    width: 30%;
     text-align: center;
+    background-color: blueviolet;
+    border-radius: 15px;
 }
 
 #user_card {
-    width: 100%;
+    width: 25%;
     text-align: center;
     align-content: center;
     margin: auto;
+    background-color: aquamarine;
+    border-radius: 15px;
 }
 
 .user_tables {
@@ -103,11 +123,9 @@ body {
 }
 
 table {
-    margin: 2px;
-    background-color: azure;
-    border-style: solid;
-    border-color: cadetblue;
-    border-radius: 1px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 td {
@@ -121,6 +139,11 @@ tbody, td {
 
 .user_profile {
     margin-top: 3px;
-    background-color: floralwhite;
-    vertical-align: middle;
+    margin-bottom: 10px;
+    margin: auto;
+    width: 25%;
+    text-align: center;
+    align-items: center;
+    background-color: bisque;
+    border-radius: 15px;
 }
