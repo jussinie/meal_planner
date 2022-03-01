@@ -1,5 +1,5 @@
+from flask import redirect, render_template, request, session, abort
 from app import app
-from flask import redirect, render_template, request, session
 import ingredient_funcs
 import users
 
@@ -56,8 +56,9 @@ def add_ingredient():
 
 @app.route("/send_ingredient", methods=["POST"])
 def send_ingredient():
-    username=session["username"]
-    user_id = users.get_one_user(username)[0]
+
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
 
     name = request.form["name"]
     kcal = request.form["kcal"]
@@ -66,5 +67,5 @@ def send_ingredient():
     fat = request.form["fat"]
     salt = request.form["salt"]
 
-    ingredient_funcs.add_ingredient(name, kcal, carbs, protein, fat, salt, user_id)
+    ingredient_funcs.add_ingredient(name, kcal, carbs, protein, fat, salt, session["user_id"])
     return redirect("/ingredients")

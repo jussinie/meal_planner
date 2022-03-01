@@ -1,8 +1,9 @@
-from app import app
-from flask import redirect, render_template, request, session, url_for
-from werkzeug.security import check_password_hash
-from db import db
+import secrets
 import recipes
+from werkzeug.security import check_password_hash
+from app import app
+from flask import redirect, render_template, request, session
+from db import db
 
 @app.route("/")
 def index():
@@ -28,6 +29,8 @@ def send_login():
     if check_password_hash(hash_value, password):
         print("valid password!")
         session["username"] = username
+        session["user_id"] = user[0]
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
         #return redirect(url_for('user', username=username))
     print("invalid password!")
