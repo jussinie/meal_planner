@@ -27,6 +27,14 @@
               <a href="/users">Users</a>
             </li>
             <li>
+                <div class="search">
+                  <form action="/recipe_results" method="GET">
+                      Hakusana: <input type="text" name="query" required>
+                      <input type="submit" value="Search">
+                      </form>
+              </div>
+            </li>
+            <li>
               <div id="navbar_user">
                 <p>You are logged in as {{ session.username }}</p>
                 <a href="/logout">Log out</a>
