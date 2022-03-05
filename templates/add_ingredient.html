@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
-{% block title %} {{ recipe_name }} {% endblock %}
+{% block title %} Add ingredient {% endblock %}
 {% block content %}
 {% if session.username %}
+<div class="add_ingredient_card"></div>
 <title>Add ingredient</title>
 <h3>Add new ingredient!</h3>
 {{ error }}
@@ -36,10 +37,10 @@
         </tr>
     </table>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="submit" value="Add ingredient">
+    <input type="submit" class="btn btn-success" value="Add ingredient">
 </form>
-
-<a href="/ingredients">Go back</a>
+<a href="/ingredients" class="btn btn-primary" style="margin-top: 5px;"  role="button">Go back</a>
+</div>
 
 <script>
     function validateForm() {
@@ -56,4 +57,3 @@
 </script>
 {% endif %}
 {% endblock %}
-

@@ -2,87 +2,108 @@
 {% block title %} {{ recipe_name }} {% endblock %}
 {% block content %}
 {% if session.username %}
-<title>Ingredients</title>
-Ingredients saved: {{ count }}
-<hr>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Calories</th>
-        <th>Carbs</th>
-        <th>Protein</th>
-        <th>Fat</th>
-        <th>Salt</th>
-    </tr>
-    {% for ingredient in approved_ingredients %}
-    <tr>
-        <td>{{ ingredient.name}}</td>
-        <td>{{ingredient.kcal}}</td>
-        <td>{{ingredient.carbs}}</td>
-        <td>{{ingredient.protein}}</td>
-        <td>{{ingredient.fat}}</td>
-        <td>{{ingredient.salt}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="table_container">
+        <title>Ingredients</title>
+        Ingredients saved: {{ count }}
+        <hr>
+        <table class="table">
+            <tr>
+                <thead class="thead-light">
+                <th>Name</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Protein</th>
+                <th>Fat</th>
+                <th>Salt</th>
+            </thead>
+            </tr>
+            {% for ingredient in approved_ingredients %}
+            <tr>
+                <td>{{ ingredient.name}}</td>
+                <td>{{ingredient.kcal}}</td>
+                <td>{{ingredient.carbs}}</td>
+                <td>{{ingredient.protein}}</td>
+                <td>{{ingredient.fat}}</td>
+                <td>{{ingredient.salt}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <hr>
+    </div>
 
-{% if user.admin %}
-<p>ADMIN</p>
-{% if ingredients_not_approved %}
-<h3>Ingredients to approve:</h3>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Calories</th>
-        <th>Carbs</th>
-        <th>Protein</th>
-        <th>Fat</th>
-        <th>Salt</th>
-    </tr>
-    {% for ingredient in ingredients_not_approved %}
-    <tr>
-        <td>{{ingredient.name}}</td>
-        <td>{{ingredient.kcal}}</td>
-        <td>{{ingredient.carbs}}</td>
-        <td>{{ingredient.protein}}</td>
-        <td>{{ingredient.fat}}</td>
-        <td>{{ingredient.salt}}</td>
-        <td><form method="post" action="/ingredients">
-            <input id="ingredient_id" name="ingredient_approved" type="hidden" value="{{ingredient.id}}" />
-            <button type="submit">Approve</button>
-            </form></td>
-        <td><form method="post" action="/ingredients">
-                <input id="ingredient_removal_id" name="ingredient_removed" type="hidden" value="{{ingredient.id}}" />
-                <button type="submit" onclick="return confirm('Are you sure you want to remove the ingredient?')">Remove</button>
-                </form></td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<h4>Well done! You have approved all the ingredients!</h4>
-{% endif %}
+    <div class="pending_ingredient_card">
+        {% if user.admin %}
+            <p>ADMIN</p>
+            {% if ingredients_not_approved %}
+                <h3>Ingredients to approve:</h3>
+                <table class="table">
+                    <tr>
+                        <thead class="thead-light">
+                            <th>Name</th>
+                            <th>Calories</th>
+                            <th>Carbs</th>
+                            <th>Protein</th>
+                            <th>Fat</th>
+                            <th>Salt</th>
+                        </thead>
+                    </tr>
+                    {% for ingredient in ingredients_not_approved %}
+                    <tr>
+                        <td>{{ingredient.name}}</td>
+                        <td>{{ingredient.kcal}}</td>
+                        <td>{{ingredient.carbs}}</td>
+                        <td>{{ingredient.protein}}</td>
+                        <td>{{ingredient.fat}}</td>
+                        <td>{{ingredient.salt}}</td>
+                        <td><form method="post" action="/ingredients">
+                            <input id="ingredient_id" name="ingredient_approved" type="hidden" value="{{ingredient.id}}" />
+                            <button type="submit">Approve</button>
+                            </form></td>
+                        <td><form method="post" action="/ingredients">
+                                <input id="ingredient_removal_id" name="ingredient_removed" type="hidden" value="{{ingredient.id}}" />
+                                <button type="submit" onclick="return confirm('Are you sure you want to remove the ingredient?')">Remove</button>
+                                </form></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h4>Well done! You have approved all the ingredients!</h4>
+            {% endif %}
 
-{% else %}
-{% if ingredients_not_approved_user %}
-<h4>Your pending ingredients:</h4>
-{% for ingredient in ingredients_not_approved_user %}
-<tr>
-    <td>{{ingredient.name}}</td>
-    <td>{{ingredient.kcal}}</td>
-    <td>{{ingredient.carbs}}</td>
-    <td>{{ingredient.protein}}</td>
-    <td>{{ingredient.fat}}</td>
-    <td>{{ingredient.salt}}</td>
-    <td><form method="post" action="/ingredients">
-            <input id="ingredient_cancel_id" name="ingredient_canceled" type="hidden" value="{{ingredient.id}}" />
-            <button type="submit" onclick="return confirm('Are you sure you want to remove the ingredient?')">Cancel adding ingredient</button>
-            </form></td>
-</tr>
-{% endfor %}
-{% endif %}
-{% endif %}
-
-<a href="/add_ingredient">Siirry lisäämään uusi</a>
-<a href="/">Etusivulle</a>
+        {% else %}
+            {% if ingredients_not_approved_user %}
+            <h4>Your pending ingredients:</h4>
+            <table class="table">
+                <tr>
+                    <thead class="thead-light">
+                        <th>Name</th>
+                        <th>Calories</th>
+                        <th>Carbs</th>
+                        <th>Protein</th>
+                        <th>Fat</th>
+                        <th>Salt</th>
+                        <th></th>
+                    </thead>
+                </tr>
+            {% for ingredient in ingredients_not_approved_user %}
+            <tr>
+                <td>{{ingredient.name}}</td>
+                <td>{{ingredient.kcal}}</td>
+                <td>{{ingredient.carbs}}</td>
+                <td>{{ingredient.protein}}</td>
+                <td>{{ingredient.fat}}</td>
+                <td>{{ingredient.salt}}</td>
+                <td><form method="post" action="/ingredients">
+                        <input id="ingredient_cancel_id" name="ingredient_canceled" type="hidden" value="{{ingredient.id}}" />
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove the ingredient?')">Cancel adding ingredient</button>
+                        </form></td>
+            </tr>
+            {% endfor %}
+            </table>
+            {% endif %}
+        <a href="/add_ingredient" class="btn btn-primary">Add new</a>
+        <a href="/" class="btn btn-primary">To front page</a>
+        </div>
+        {% endif %}
 {% endif %}
 {% endblock %}

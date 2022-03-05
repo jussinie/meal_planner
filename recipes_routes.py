@@ -1,5 +1,5 @@
 from app import app
-from flask import redirect, render_template, request, session, url_for
+from flask import redirect, render_template, request, session
 from db import db
 import ingredient_funcs
 import recipes
@@ -8,11 +8,10 @@ import users
 
 @app.route("/recipes")
 def show_recipes():
-    recipe_names = recipes.get_all_recipe_names()
-    print(recipe_names)
+    recipe_infos = recipes.get_all_recipe_info()
     return render_template("recipes.html",
         count=recipes.get_recipe_count(),
-        recipe_names=recipe_names)
+        recipe_infos=recipe_infos)
 
 @app.route("/recipe_results")
 def recipe_results():

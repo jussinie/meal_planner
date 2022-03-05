@@ -6,41 +6,42 @@
     {% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='meal_planner_styles.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   </head>
   
   <body>
-    <div id="header">
+    <div class="header">
         {% if session.username %}
-        <nav class="navbar">
-          <a class="brand" href="#">RS</a>
-          <ul>
-            <li>
-              <a href="/users/{{ session.username }}">User</a>
-            </li>
-            <li>
-              <a href="/recipes">Recipes</a>
-            </li>
-            <li>
-              <a href="/ingredients">Ingredients</a>
-            </li>
-            <li>
-              <a href="/users">Users</a>
-            </li>
-            <li>
-              <div id="navbar_user">
-                <p>You are logged in as {{ session.username }}</p>
-                <a href="/logout">Log out</a>
-              </div>
-            </li>
-          </ul>
-
-        </nav>
+        <div class="container">
+          <nav class="navbar navbar-expand-sm navbar-light py-lg-0">
+            <img src="{{ url_for('static', filename='meal_icon.png') }}" alt="user avatar" height="60px">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/users/{{ session.username }}">User</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/recipes">Recipes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/ingredients">Ingredients</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/users">Users</a>
+              </li>
+              <li class="nav-item">
+                <div id="navbar_user">
+                  <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="30px">
+                  {{ session.username }} <a href="/logout" class="btn btn-primary" style="display: inline;">Log out</a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+        </div>
         {% endif %}
-        <hr>
       </div>
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div class="content">{% block content %}{% endblock %}</div>
     {% if session.username %}
-    <div id="footer">
+    <div class="footer">
       {% block footer %}
       <hr>
       This is footer. <br>
