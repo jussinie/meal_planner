@@ -10,7 +10,22 @@ import users
 def show_recipes():
     recipe_names = recipes.get_all_recipe_names()
     print(recipe_names)
-    return render_template("recipes.html", count=recipes.get_recipe_count(), recipe_names=recipe_names)
+    return render_template("recipes.html",
+        count=recipes.get_recipe_count(),
+        recipe_names=recipe_names)
+
+@app.route("/recipe_results")
+def recipe_results():
+
+    query = request.args["query"]
+    sql = "SELECT name FROM recipes WHERE name LIKE :query"
+    result = db.session.execute(sql, {"query":"%"+query+"%"})
+    recipe_names = result.fetchall()
+
+    #recipe_names = recipes.get_all_recipe_names()
+    return render_template("recipes_results.html",
+        count=recipes.get_recipe_count(),
+        recipe_names=recipe_names)
 
 @app.route("/add_recipe")
 def add_recipe():
@@ -33,11 +48,19 @@ def send_recipe():
     # Fetching multiple ingredient amounts from page
     amounts = request.form.getlist("ingredient_amount")
 
-    #for amount in amounts:
-    #    if (len(amount) > 4):
-    #        return redirect("/add_recipe.html")
+    for amount in amounts:
+        if amount != "":
+            try:
+                amount = int(amount)
+                print(amount)
+            except: 
+                return render_template("add_recipe.html",
+                    error="Make sure that amounts are given as grams. No decimals.",
+                    all_ingredients=ingredient_funcs.get_ingredient_names())
+            if amount > 999:
+                return render_template("add_recipe.html", error="Amount must be under 1000 grams")
 
-    recipe_id = recipes.add_recipe_and_return_id(name)
+    recipe_id = recipes.add_recipe_and_return_id(name, session["user_id"])
     print(recipe_id, "recipe_id")
 
     # add recipe with ingredient(s)

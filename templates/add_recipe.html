@@ -114,6 +114,15 @@
             alert("Name must be filled");
             return false;
         }
+        if (x.length < 3) {
+            alert("Name must be longer than two characters");
+            return false;
+        }
+        if (x.length > 50) {
+            alert("Name cannot be longer than 50 characters");
+            return false;
+        }
+        let y = document.forms["recipe_form"]["amount"].value;
     }
 </script>
 {% endif %}

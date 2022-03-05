@@ -14,10 +14,26 @@ def send():
     last_name = request.form["last_name"]
     username = request.form["username"]
     password = request.form["password"]
-    height = int(request.form["height"])
-    weight = float(request.form["weight"])
-    age = int(request.form["age"])
+    height = (request.form["height"])
+    weight = (request.form["weight"])
+    age = (request.form["age"])
     gender = request.form["gender"]
+
+    try:
+        int(height)
+        int(age)
+        float(weight)
+    except:
+        return render_template(
+                "new_user.html",
+                error_message="Please check that age, height and weight are inserted correctly"
+                )
+
+    if age < 0 or age > 120:
+        return render_template(
+                "new_user.html",
+                error_message="Please check that inserted age is between 0 and 120"
+                )
 
     def calculate_bmr(weight: float, height: int, age: int, gender: str):
         if gender == "Male" or gender == "male":
@@ -31,24 +47,32 @@ def send():
 
     hash_value = generate_password_hash(password)
 
-    try:
-        users.add_user(
-            first_name,
-            last_name,
-            username,
-            hash_value,
-            height,
-            weight,
-            age,
-            gender,
-            bmr
-            )
-        return redirect("login")
-    except RuntimeError:
+    user_id = users.get_user_id_with_username(username)
+
+    if user_id is not None:
+        try:
+            users.add_user(
+                first_name,
+                last_name,
+                username,
+                hash_value,
+                height,
+                weight,
+                age,
+                gender,
+                bmr
+                )
+            return redirect("login")
+        except RuntimeError:
+            return render_template(
+                "new_user.html",
+                error_message="Something went wrong. Please try again."
+                )
+    else:
         return render_template(
-            "new_user.html",
-            error_message="Username exists already. Please try again with another username."
-            )
+                "new_user.html",
+                error_message="Username exists already. Please try again with another username."
+                )
 
 @app.route("/users")
 def all_users():

@@ -22,9 +22,9 @@ def get_recipe_count():
     result = db.session.execute("SELECT COUNT(name) from recipes")
     return result.fetchone()[0]
 
-def add_recipe_and_return_id(name: str):
-    sql_recipe = "INSERT INTO recipes (name) VALUES (:name) RETURNING id"
-    result = db.session.execute(sql_recipe, {"name":name})
+def add_recipe_and_return_id(name: str, added_by: int):
+    sql_recipe = "INSERT INTO recipes (name, added_by) VALUES (:name, :added_by) RETURNING id"
+    result = db.session.execute(sql_recipe, {"name":name, "added_by":added_by})
     db.session.commit()
     return result.fetchone()[0]
 
