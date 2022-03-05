@@ -26,7 +26,7 @@ body {
 .add_ingredient_card, .pending_ingredient_card, .recipe_card {
     margin: auto;
     margin-bottom: 10px;
-    width: 40%;
+    width: 50%;
     text-align: center;
     align-items: center;
     background-color: bisque;
