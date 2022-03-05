@@ -4,13 +4,6 @@
 {% if session.username %}
 <title>Recipes</title>
     <div class="content">
-        <div class="search">
-            <form action="/recipe_results" method="GET">
-                <input type="text" name="query" placeholder="Search for a recipe" required>
-                <input type="submit" value="Search">
-                </form>
-                
-        </div>
     Recipes saved: {{ count }}
     <hr>
     <a href="/add_recipe" class="btn btn-primary">Add new</a>
