@@ -47,7 +47,6 @@ def ingredients():
             user=user)
 
     else:
-        print("mentiin elseen")
         return redirect("/ingredients")
 
 @app.route("/add_ingredient")
@@ -66,6 +65,15 @@ def send_ingredient():
     protein = request.form["protein"]
     fat = request.form["fat"]
     salt = request.form["salt"]
+
+    try:
+        kcal = int(kcal)
+        carbs = float(carbs)
+        protein = float(protein)
+        fat = float(fat)
+        salt = float(salt)
+    except:
+        return render_template("add_ingredient.html", error="Please check the format of inserted values.")
 
     ingredient_funcs.add_ingredient(name, kcal, carbs, protein, fat, salt, session["user_id"])
     return redirect("/ingredients")

@@ -4,7 +4,8 @@
 {% if session.username %}
 <title>Add ingredient</title>
 <h3>Add new ingredient!</h3>
-<form action="/send_ingredient" method="post">
+{{ error }}
+<form name="ingredient_form" action="/send_ingredient" method="post" onsubmit="return validateForm()">
     <table>
         <tr>
             <td>Ingredient name: </td>
@@ -13,6 +14,7 @@
         <tr>
             <td>Kilocalories: </td>
             <td><input type="text" name="kcal"></td>
+            <td>No decimals.</td>
         </tr>
         <tr>
             <td>Carbohydrates:</td>
@@ -25,10 +27,12 @@
         <tr>
             <td>Fat:</td>
             <td><input type="text" name="fat"></td>
+
         </tr>
         <tr>
             <td>Salt:</td>
             <td><input type="text" name="salt"></td>
+            <td>In grams, with decimals</td>
         </tr>
     </table>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -36,5 +40,20 @@
 </form>
 
 <a href="/ingredients">Go back</a>
+
+<script>
+    function validateForm() {
+        let x = document.forms["ingredient_form"]["name"].value;
+        if (x == "") {
+            alert("Name must be filled");
+            return false;
+        }
+        if (x.length < 2) {
+            alert("Name must be longer than 1 character.")
+            return false;
+        }
+    }
+</script>
 {% endif %}
 {% endblock %}
+
