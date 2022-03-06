@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %} Add ingredient {% endblock %}
 {% block content %}
-{% if session.username %}
+{% if session.user_id %}
     <title>Add ingredient</title>
     <h3>Add new ingredient!</h3>
     {{ error }}

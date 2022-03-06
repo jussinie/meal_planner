@@ -49,6 +49,7 @@
           </div>
           </nav>
         </div>
+        <div class="content">{% block content %}{% endblock %}
         {% else %}
         <div class="header">
           <nav class="navbar navbar-expand-sm navbar-light py-lg-0">
@@ -58,7 +59,6 @@
           </nav>
         </div>
         {% endif %}
-        <div class="content">{% block content %}{% endblock %}
         </div>
         {% if session.username %}
         <footer class="footer">

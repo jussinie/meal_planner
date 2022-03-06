@@ -36,55 +36,55 @@ def add_recipe():
 def send_recipe():
     name = request.form["name"]
     #Check if recipe already exists
-    check = recipes.get_recipe_id_with_name(name)
-    print(check)
-    if check is not None:
-        return render_template("add_recipe.html",
-            error="This recipe exists already.",
-            all_ingredients=ingredient_funcs.get_ingredient_names())
+    try:
+        check = recipes.get_recipe_id_with_name(name)
+        if check is not None:
+            return render_template("add_recipe.html",
+                error="This recipe exists already.",
+                all_ingredients=ingredient_funcs.get_ingredient_names())
+    except:
+        ingredients = request.form.getlist("ingredient")
+        print(ingredients)
+        # Fetching multiple ingredients from page
+        ingredient_ids = []
+        for ingredient in ingredients:
+            if ingredient != "":
+                ingredient_ids.append(ingredient_funcs.get_one_ingredient_with_name(ingredient))
+        print(ingredient_ids)
 
-    ingredients = request.form.getlist("ingredient")
-    print(ingredients)
-    # Fetching multiple ingredients from page
-    ingredient_ids = []
-    for ingredient in ingredients:
-        if ingredient != "":
-            ingredient_ids.append(ingredient_funcs.get_one_ingredient_with_name(ingredient))
-    print(ingredient_ids)
+        # Fetching multiple ingredient amounts from page
+        amounts = request.form.getlist("ingredient_amount")
 
-    # Fetching multiple ingredient amounts from page
-    amounts = request.form.getlist("ingredient_amount")
+        for amount in amounts:
+            if amount != "":
+                try:
+                    amount = int(amount)
+                    print(amount)
+                except: 
+                    return render_template("add_recipe.html",
+                        error="Make sure that amounts are given as grams. No decimals.",
+                        all_ingredients=ingredient_funcs.get_ingredient_names())
+                if amount > 999:
+                    return render_template("add_recipe.html", error="Amount must be under 1000 grams")
 
-    for amount in amounts:
-        if amount != "":
-            try:
-                amount = int(amount)
-                print(amount)
-            except: 
-                return render_template("add_recipe.html",
-                    error="Make sure that amounts are given as grams. No decimals.",
-                    all_ingredients=ingredient_funcs.get_ingredient_names())
-            if amount > 999:
-                return render_template("add_recipe.html", error="Amount must be under 1000 grams")
+        recipe_id = recipes.add_recipe_and_return_id(name, session["user_id"])
+        print(recipe_id, "recipe_id")
 
-    recipe_id = recipes.add_recipe_and_return_id(name, session["user_id"])
-    print(recipe_id, "recipe_id")
+        # add recipe with ingredient(s)
+        for ingredient_id, amount in zip(ingredient_ids, amounts):
+            if amount != "":
+                recipes.add_recipe_with_ingredients(amount, recipe_id, ingredient_id)
+        db.session.commit()
 
-    # add recipe with ingredient(s)
-    for ingredient_id, amount in zip(ingredient_ids, amounts):
-        if amount != "":
-            recipes.add_recipe_with_ingredients(amount, recipe_id, ingredient_id)
-    db.session.commit()
+        # add total values from ingredient to recipe
+        total_kcal = 0
+        for ingredient_id, amount in zip(ingredient_ids, amounts):
+            if amount != "":
+                kcal_result = ingredient_funcs.get_one_ingredient_with_id(ingredient_id)
+                total_kcal += int(kcal_result.fetchone()[0]) * int(amount) / 100.0
+        recipes.update_recipe_total_kcal(total_kcal, recipe_id)
 
-    # add total values from ingredient to recipe
-    total_kcal = 0
-    for ingredient_id, amount in zip(ingredient_ids, amounts):
-        if amount != "":
-            kcal_result = ingredient_funcs.get_one_ingredient_with_id(ingredient_id)
-            total_kcal += int(kcal_result.fetchone()[0]) * int(amount) / 100.0
-    recipes.update_recipe_total_kcal(total_kcal, recipe_id)
-
-    return redirect(f"/recipes/{name}")
+        return redirect(f"/recipes/{name}")
 
 @app.route("/recipes/<name>", methods=['GET', 'POST'])
 def recipe(name):
