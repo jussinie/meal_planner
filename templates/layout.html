@@ -49,6 +49,14 @@
           </div>
           </nav>
         </div>
+        {% else %}
+        <div class="header">
+          <nav class="navbar navbar-expand-sm navbar-light py-lg-0">
+            <div class="container-fluid">
+            <img src="{{ url_for('static', filename='meal_icon.png') }}" alt="user avatar" height="60px">
+          </div>
+          </nav>
+        </div>
         {% endif %}
         <div class="content">{% block content %}{% endblock %}
         </div>
@@ -60,7 +68,9 @@
         </footer>
     {% else %}
     {% block login%}
-    <p>Please login <a href="/login">here</a> first</p>
+    <div style="text-align:center">
+      <a href="/login" class="btn btn-light">Login</a>
+    </div>
     {% endblock %}
     {% endif %}
   </div>

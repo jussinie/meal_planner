@@ -1,3 +1,6 @@
+from sqlite3 import IntegrityError
+
+import sqlalchemy
 from app import app
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash
@@ -20,9 +23,9 @@ def send():
     gender = request.form["gender"]
 
     try:
-        int(height)
-        int(age)
-        float(weight)
+        height = int(height)
+        age = int(age)
+        weight = float(weight)
     except:
         return render_template(
                 "new_user.html",
@@ -47,32 +50,26 @@ def send():
 
     hash_value = generate_password_hash(password)
 
-    user_id = users.get_user_id_with_username(username)
+    print("tullaan testiin")
 
-    if user_id is not None:
-        try:
-            users.add_user(
-                first_name,
-                last_name,
-                username,
-                hash_value,
-                height,
-                weight,
-                age,
-                gender,
-                bmr
-                )
-            return redirect("login")
-        except RuntimeError:
-            return render_template(
-                "new_user.html",
-                error_message="Something went wrong. Please try again."
-                )
-    else:
+    try:
+        users.add_user(
+            first_name,
+            last_name,
+            username,
+            hash_value,
+            height,
+            weight,
+            age,
+            gender,
+            bmr
+            )
+        return redirect("login")
+    except sqlalchemy.exc.IntegrityError:
         return render_template(
-                "new_user.html",
-                error_message="Username exists already. Please try again with another username."
-                )
+            "new_user.html",
+            error_message="Username exists already. Please try again with another username."
+            )
 
 @app.route("/users")
 def all_users():
