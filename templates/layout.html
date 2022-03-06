@@ -2,7 +2,7 @@
 <html>
   <head>
     {% block head %}
-    <title>{% block title %}{% endblock %} - Meal Planner</title>
+    <title>Meal Planner - {% block title %}{% endblock %}</title>
     {% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='meal_planner_styles.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -10,10 +10,11 @@
   </head>
   
   <body>
-    <div class="header">
+    <div class="container">
         {% if session.username %}
-        <div class="container">
+        <div class="header">
           <nav class="navbar navbar-expand-sm navbar-light py-lg-0">
+            <div class="container-fluid">
             <img src="{{ url_for('static', filename='meal_icon.png') }}" alt="user avatar" height="60px">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item">
@@ -31,35 +32,37 @@
               <li class="nav-item">
                 <div class="search">
                   <form action="/recipe_results" method="GET">
-                      Hakusana: <input type="text" name="query" required>
+                      <input type="text" name="query" placeholder="Search for a recipe" required>
                       <input type="submit" value="Search">
                       </form>
-              </div>
+                </div>
               </li>
+              <div class="collapse navbar-collapse justify-content-end">
               <li class="nav-item">
                 <div id="navbar_user">
                   <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="user avatar" height="30px">
-                  {{ session.username }} <a href="/logout" class="btn btn-primary" style="display: inline;">Log out</a>
+                  {{ session.username }} <a href="/logout" class="btn btn-light" style="display: inline;">Log out</a>
                 </div>
               </li>
+            </div>
             </ul>
+          </div>
           </nav>
         </div>
         {% endif %}
-      </div>
-    <div class="content">{% block content %}{% endblock %}</div>
-    {% if session.username %}
-    <div class="footer">
-      {% block footer %}
-      <hr>
-      This is footer. <br>
-      &copy; Copyright jussinie 
-      {% endblock %}
-    </div>
+        <div class="content">{% block content %}{% endblock %}
+        </div>
+        {% if session.username %}
+        <footer class="footer">
+          {% block footer %}
+          &copy; Copyright jussinie 
+          {% endblock %}
+        </footer>
     {% else %}
     {% block login%}
     <p>Please login <a href="/login">here</a> first</p>
     {% endblock %}
     {% endif %}
+  </div>
   </body>
 </html>

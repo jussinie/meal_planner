@@ -1,25 +1,17 @@
 {% extends "layout.html" %}
-<title>Etusivu</title>
+{% block title %}Front page{% endblock %}
 
 {% block content %}
 {% if session.username %}
 
-<div class="front_page_cards">
-    <div id="recipes_card">
-        <a href="/recipes">recipes</a>
-    </div>
-    <div id="ingredients_card">
-        <a href="/ingredients">ingredients</a>
-    </div>
-    <div id="users_card">
-        <a href="/users">users</a>
-    </div>
+<div>
+    Welcome to Meal Planner App! Start by searching recipes or just create a new one!
 </div>
-
+<br>
 <div>
     <p>Freshly added recipes:</p> 
 {% for recipe in all_recipes %}
-<a href="{{ recipe.name }}">{{ recipe.name }}</a> <br>
+<a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a> <br>
 {% endfor %}
 {% endif %}
 

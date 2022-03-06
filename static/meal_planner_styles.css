@@ -1,37 +1,62 @@
-#header {
-    background-color: gray;
+.header {
+    flex-shrink: 0;
 }
 
-#footer {
-    background-color: gray;
-    height: 100%;
+.footer,
+.push {
+    background-color: #a2a8d3;
+    height: 50px;
+}
+
+footer {
+    position: absolute;
+    margin-top: 40px;
+    bottom: 0;
+    width: 60.4%;
+    height: 80px;
+    text-align: right;
+    
+}
+
+html {
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
     font-weight: 300;
-    background-color: floralwhite;
+    background-color: #e7eaf6;
+    min-height: 100%;
+    margin: 0;
 }
 
 .content {
-    margin: auto;
     text-align: center;
+}
+
+.container {
+    padding-bottom: 80px;
+    height: auto;
+
 }
 
 .table_container {
     margin: auto;
-    width: 50%;
 }
 
-.add_ingredient_card, .pending_ingredient_card, .recipe_card {
+.pending_ingredient_card, .recipe_card, .front_page_cards {
     margin: auto;
     margin-bottom: 10px;
-    width: 50%;
     text-align: center;
     align-items: center;
-    background-color: bisque;
+    background-color: #a2a8d3;
     border-radius: 15px;
     padding-bottom: 10px;
+}
+
+.add_ingredient_card {
+    margin: auto;
 }
 
 /*
@@ -46,31 +71,33 @@ body {
     vertical-align: middle;
 } */
 
+/*
 #comment_card {
     margin: 10px;
     padding: 5px;
     border-style: solid;
     border-width: 1px;
     width: 30%;
-}
+} */
 
-.meal_card {
+.meal_card, #comment_card {
     margin: auto;
     margin-top: 10px;
     padding: 5px;
     border-style: solid;
     border-width: 1px;
     text-align: center;
-    background-color: blueviolet;
+    background-color: #a2a8d3;
     border-radius: 15px;
+    width: 50%;
 }
 
 #user_card {
-    width: 25%;
+    width: 50%;
     text-align: center;
     align-content: center;
     margin: auto;
-    background-color: aquamarine;
+    margin-top: 15px;
     border-radius: 15px;
 }
 
@@ -78,14 +105,8 @@ body {
     margin: auto;
 }
 
-.front_page_cards {
-    margin: auto;
-    width: 45%;
-    align-content: center;
-}
-
 #recipes_card, #ingredients_card, #users_card {
-    background-color: dimgray;
+    background-color: #a2a8d3;
     margin:auto;
     text-align: center;
     vertical-align: middle;
@@ -95,7 +116,7 @@ body {
 }
 
 .navbar {
-    background-color: wheat;
+    background-color: #a2a8d3;
     align-items: center;
     display: flex;
 }
@@ -118,10 +139,6 @@ body {
     background-color: whitesmoke;
 }
 
-#navbar_user {
-    background-color: blue;
-}
-
 table {
     margin: auto;
     margin-top: 10px;
@@ -138,12 +155,25 @@ tbody, td {
 }
 
 .user_profile {
-    margin-top: 3px;
-    margin-bottom: 10px;
+    width: 50%;
     margin: auto;
-    width: 25%;
+    padding-top: 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
     text-align: center;
     align-items: center;
-    background-color: bisque;
+    background-color: #a2a8d3;
     border-radius: 15px;
+}
+
+a {
+    color: #113f67;
+}
+
+a:link {
+    color: #113f67;
+}
+
+a:visited {
+    color: #113f67;
 }

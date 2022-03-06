@@ -3,7 +3,7 @@
 {% block content %}
 {% if session.username %}
 <h3>{{ recipe_name }}</h3>
-<h4>Raaka-aineet</h4>
+<h4>Ingredients</h4>
 {% for ingredient in all_ingredients %}
 <hr>
 {{ ingredient.ingredient_name }} {{ingredient.amount}}g <br>
@@ -22,18 +22,15 @@
 </div>
 {% endfor %}
 
-<h3>errorz</h3>
-
 <form action="/recipes/{{ recipe_name }}" method="post">
-    Comment: <br>
-    <input type="text" name="comment">
-    <input type="submit" value="Add comment" name="submit_comment">
+    <input type="text" name="comment" placeholder="Leave comment">
+    <input type="submit" value="Add comment" class="btn btn-light" name="submit_comment">
 </form>
 
 <form action="/recipes/{{ recipe_name }}" method="post">
-    <input type="submit" value="Add to planner" name="add_recipe_to_plan">
+    <input type="submit" value="Add recipe to planner" class="btn btn-success" name="add_recipe_to_plan">
 </form>
 
-<a href="/recipes">Back to recipes</a>
+<a href="/recipes" class="btn btn-light">Back to recipes</a>
 {% endif %}
 {% endblock %}

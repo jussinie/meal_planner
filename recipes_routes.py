@@ -35,6 +35,14 @@ def add_recipe():
 @app.route("/send_recipe", methods=["POST"])
 def send_recipe():
     name = request.form["name"]
+    #Check if recipe already exists
+    check = recipes.get_recipe_id_with_name(name)
+    print(check)
+    if check is not None:
+        return render_template("add_recipe.html",
+            error="This recipe exists already.",
+            all_ingredients=ingredient_funcs.get_ingredient_names())
+
     ingredients = request.form.getlist("ingredient")
     print(ingredients)
     # Fetching multiple ingredients from page

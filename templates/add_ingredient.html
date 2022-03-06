@@ -2,45 +2,47 @@
 {% block title %} Add ingredient {% endblock %}
 {% block content %}
 {% if session.username %}
-<div class="add_ingredient_card"></div>
-<title>Add ingredient</title>
-<h3>Add new ingredient!</h3>
-{{ error }}
-<form name="ingredient_form" action="/send_ingredient" method="post" onsubmit="return validateForm()">
-    <table>
-        <tr>
-            <td>Ingredient name: </td>
-            <td><input type="text" name="name"></td>
-        </tr>
-        <tr>
-            <td>Kilocalories: </td>
-            <td><input type="text" name="kcal"></td>
-            <td>No decimals.</td>
-        </tr>
-        <tr>
-            <td>Carbohydrates:</td>
-            <td><input type="text" name="carbs"></td>
-        </tr>
-        <tr>
-            <td>Protein:</td>
-            <td><input type="text" name="protein"></td>
-        </tr>
-        <tr>
-            <td>Fat:</td>
-            <td><input type="text" name="fat"></td>
+    <title>Add ingredient</title>
+    <h3>Add new ingredient!</h3>
+    {{ error }}
+    <form name="ingredient_form" action="/send_ingredient" method="post" onsubmit="return validateForm()">
+        <table class="table">
+            <tr>
+                <td>Ingredient name: </td>
+                <td><input type="text" name="name"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Kilocalories: </td>
+                <td><input type="text" name="kcal"></td>
+                <td>No decimals.</td>
+            </tr>
+            <tr>
+                <td>Carbohydrates:</td>
+                <td><input type="text" name="carbs"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Protein:</td>
+                <td><input type="text" name="protein"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Fat:</td>
+                <td><input type="text" name="fat"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Salt:</td>
+                <td><input type="text" name="salt"></td>
+                <td>In grams, with decimals</td>
+            </tr>
+        </table>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="submit" class="btn btn-success" value="Add ingredient">
+    </form>
+    <a href="/ingredients" class="btn btn-light" style="margin-top: 5px;"  role="button">Go back</a>
 
-        </tr>
-        <tr>
-            <td>Salt:</td>
-            <td><input type="text" name="salt"></td>
-            <td>In grams, with decimals</td>
-        </tr>
-    </table>
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="submit" class="btn btn-success" value="Add ingredient">
-</form>
-<a href="/ingredients" class="btn btn-primary" style="margin-top: 5px;"  role="button">Go back</a>
-</div>
 
 <script>
     function validateForm() {

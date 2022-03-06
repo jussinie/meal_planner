@@ -5,7 +5,7 @@
 <title>Add recipe</title>
 <h3>Add new recipe!</h3>
 {{ error }} <br>
-<table>
+<table class="table">
     <form name="recipe_form" action="/send_recipe" method="post" onsubmit="return validateForm()">
         <tr>
             <td></td>
@@ -97,11 +97,10 @@
                 <input type="text" name="ingredient_amount">
             </td>
         </tr>    
-        <input type="submit" value="Add recipe">
+        <input type="submit" class="btn btn-success" value="Add recipe">
     </form>
 </table>
-<a href="/">Siirry etusivulle</a>
-<button onclick="myfunction()">testi</button>
+<a href="/" class="btn btn-light">Siirry etusivulle</a>
 <script>
     function validateForm() {
         let x = document.forms["recipe_form"]["name"].value;

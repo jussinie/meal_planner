@@ -6,10 +6,10 @@
     <div class="content">
     Recipes saved: {{ count }}
     <hr>
-    <a href="/add_recipe" class="btn btn-primary">Add new</a>
-    <a href="/" class="btn btn-primary">To front page</a> <br>
+    <a href="/add_recipe" class="btn btn-light">Add new</a>
+    <a href="/" class="btn btn-light">To front page</a> <br>
     {% for recipe in recipe_infos %}
-    <div class="recipe_card">
+    <div class="recipe_card" style="margin-top: 10px">
         <a href="/recipes/{{ recipe.name }}">{{ recipe.name }}</a>
         <p>Total calories: {{ recipe.total_kcal }}</p> 
         <p>Added by: {{ recipe.username }}</p>
