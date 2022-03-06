@@ -1,21 +1,22 @@
 {% extends "layout.html" %}
 {% block title %}Log in to the app{% endblock %}
-{% block content %}
+{% block login %}
 {% if session.username %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a>
-<hr>
-{% else %}
-<h3>{{ error_message }}</h3>    
-<form action="/send_login" method="post">
-    Username:
-    <input type="text" name="username">
-    Password:
-    <input type="password" name="password">
-    <input type="submit" value="Login">
-</form>
-<p>Not yet a user? Please create your account <a href="/new_user">here</a></p>
-{% block login%}{% endblock %}
+<div class="login" style="text-align:center">
+    <p>Olet kirjautunut nimellä {{ session.username }}</p>
+    <a href="/logout">Kirjaudu ulos</a>
+    <hr>
+    {% else %}
+    <h3>{{ error_message }}</h3>    
+    <form action="/send_login" method="post">
+        Username:
+        <input type="text" name="username">
+        Password:
+        <input type="password" name="password">
+        <input type="submit" value="Login">
+    </form>
+    <p>Not yet a user? Please create your account <a href="/new_user">here</a></p>
+</div>
 {% endif %}
 {% endblock %}
 

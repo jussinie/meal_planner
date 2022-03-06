@@ -49,8 +49,8 @@
           </div>
           </nav>
         </div>
-        <div class="content">{% block content %}{% endblock %}
-        {% else %}
+        <div class="content">{% block content %}{% endblock %}</div>
+      {% else %}
         <div class="header">
           <nav class="navbar navbar-expand-sm navbar-light py-lg-0">
             <div class="container-fluid">
@@ -58,8 +58,10 @@
           </div>
           </nav>
         </div>
-        {% endif %}
+        <div class="new_user" style="text-align:center">
+          {% block new_user %}{% endblock %}
         </div>
+      {% endif %}
         {% if session.username %}
         <footer class="footer">
           {% block footer %}
@@ -67,11 +69,11 @@
           {% endblock %}
         </footer>
     {% else %}
-    {% block login%}
-    <div style="text-align:center">
+    <div class="login" style="text-align:center">
+      {% block login%}
       <a href="/login" class="btn btn-light">Login</a>
+      {% endblock %}
     </div>
-    {% endblock %}
     {% endif %}
   </div>
   </body>

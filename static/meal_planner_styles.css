@@ -59,6 +59,10 @@ body {
     margin: auto;
 }
 
+.login {
+    text-align: center;
+}
+
 /*
 .recipe_card {
     border-style: double;
